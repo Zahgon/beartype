@@ -226,42 +226,7 @@ class CacheUnboundedStrong(object):
         object
             **Value** (i.e., arbitrary object) associated with this key.
         '''
-        # assert isinstance(key, Hashable), f'{repr(key)} unhashable.'
-        # assert callable(value_factory), f'{repr(value_factory)} uncallable.'
-
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # CAUTION: Synchronize with the cache_or_get_cached_value() method.
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        # Attempt to...
-        try:
-            # Thread-safely...
-            with self._lock:
-                # Value previously cached under this key if any *OR* the
-                # sentinel placeholder otherwise.
-                value_old = self._key_to_value_get(key, _SENTINEL)
-
-                # If this key has already been cached, return this value as is.
-                if value_old is not _SENTINEL:
-                    return value_old
-                # Else, this key has yet to be cached.
-
-                # New value created by this factory function, localized for
-                # negligible efficiency to avoid the unnecessary subsequent
-                # dictionary lookup.
-                value = value_factory(arg)
-
-                # Cache this key with this value.
-                self._key_to_value_set(key, value)
-
-                # Return this value.
-                return value
-        # If this key is unhashable...
-        except TypeError:
-            # Create and return a new value via this factory function *WITHOUT*
-            # attempting to memoize. While non-ideal, generality and stability
-            # is more ideal than raising a fatal exception.
-            return value_factory(arg)
+        pass
 
     # ..................{ CLEARERS                           }..................
     #FIXME: Unit test us up, please.

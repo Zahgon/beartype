@@ -55,7 +55,7 @@ class ClassTypeHint(TypeHint):
 
         # Unconditionally return true, as simple classes are unsubscripted and
         # could thus be said to only have ignorable arguments. Look. Semantics.
-        return True
+        pass
 
     # ..................{ PRIVATE ~ methods                  }..................
     def _is_subhint_branch(self, branch: TypeHint) -> bool:

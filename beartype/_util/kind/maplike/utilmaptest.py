@@ -160,18 +160,7 @@ def is_mapping_keys_all(
     bool
         :data:`True` only if this mapping contains *all* of these keys.
     '''
-    assert isinstance(mapping, Mapping), f'{repr(mapping)} not mapping.'
-    assert isinstance(keys, Set), f'{repr(keys)} not set.'
-    assert bool(keys), 'Keys empty.'
-
-    # Return true only if this mapping contains *ALL* of these keys,
-    # equivalent to efficiently testing whether this set of one or more keys is
-    # a strict subset of the set of all keys in this mapping.
-    #
-    # Note that we intentionally do *NOT* call the set.issubclass() method here.
-    # Even standard set types that otherwise satisfy the "collections.abc.Set"
-    # protocol do *NOT* necessarily define that method.
-    return keys <= mapping.keys()
+    pass
 
 
 #FIXME: Unit test us up, please.
@@ -193,12 +182,4 @@ def is_mapping_keys_any(
     bool
         :data:`True` only if this mapping contains *any* of these keys.
     '''
-    assert isinstance(mapping, Mapping), f'{repr(mapping)} not mapping.'
-    assert isinstance(keys, Set), f'{repr(keys)} not set.'
-    assert bool(keys), 'Keys empty.'
-
-    # Return true only if this mapping contains one or more of these keys,
-    # equivalent to efficiently testing whether the set intersection between
-    # this set of one or more keys *AND* the set of all keys in this mapping is
-    # a non-empty set.
-    return bool(keys & mapping.keys())
+    pass

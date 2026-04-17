@@ -36,8 +36,7 @@ def is_os_macos() -> bool:
 
     This tester is memoized for efficiency.
     '''
-
-    return platform_system() == 'Darwin'
+    pass
 
 
 @callable_cached
@@ -48,5 +47,4 @@ def is_os_windows_vanilla() -> bool:
 
     This tester is memoized for efficiency.
     '''
-
-    return sys_platform == 'win32'
+    pass

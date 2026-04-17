@@ -251,31 +251,4 @@ def _is_object_attr_callable_not_object_slot_wrapper(
     root :class:`object` superclass providing mostly useless default
     implementations of popular dunder methods).
     '''
-    # print(f'OBJECT_SLOT_WRAPPERS: {OBJECT_SLOT_WRAPPERS}')
-
-    # If this attribute value is uncallable, return false immediately.
-    if not callable(attr_value):
-        return False
-    # Else, this attribute value is callable.
-
-    # Return true only if this callable is *NOT* an "object" slot wrapper.
-    #
-    # Note that:
-    # * Although all standard callables are hashable, some user-defined
-    #   callables are unhashable. Examples of unhashable callables include:
-    #   * Unhashable pseudo-callables (i.e., unhashable objects whose classes
-    #     define the __call__() dunder methods).
-    # * The beartype._util.utilobject.is_object_hashable() tester is *NOT*
-    #   necessarily safely importable here, due to chicken-and-egg issues. Ergo,
-    #   we manually guard against unhashable callables.
-    try:
-        return attr_value not in OBJECT_SLOT_WRAPPERS
-    # If doing so raises *ANY* exception, this callable is unhashable. However,
-    # *ALL* "object" slot wrappers are hashable. It follows that this callable
-    # is *NOT* an "object" slot wrapper. Despite being unhashable, this callable
-    # *COULD* be of interest to the caller.
-    except Exception:
-        pass
-
-    # Return true as a fallback.
-    return True
+    pass

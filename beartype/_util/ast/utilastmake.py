@@ -74,31 +74,7 @@ def make_node_from_code_snippet(code_snippet: str) -> AST:
     _BeartypeUtilAstException
         If this string defines either no *or* two or more child objects.
     '''
-    assert isinstance(code_snippet, str), f'{repr(code_snippet)} not string.'
-
-    # "ast.Module" AST tree parsed from this string.
-    node_module = ast_parse(code_snippet)
-
-    # If this node is *NOT* actually a module node, raise an exception.
-    if not isinstance(node_module, Module):  # pragma: no cover
-        raise _BeartypeUtilAstException(
-            f'{repr(node_module)} not AST module node.')
-    # Else, this node is a module node.
-
-    # List of all direct child nodes of this parent module name.
-    nodes_child = node_module.body
-
-    # If this module node contains either no *OR* two or more child nodes, raise
-    # an exception.
-    if len(nodes_child) != 1:  # pragma: no cover
-        raise _BeartypeUtilAstException(
-            f'Python code {repr(code_snippet)} defines '
-            f'{len(nodes_child)} != 1 child objects.'
-        )
-    # Else, this module node contains exactly one child node.
-
-    # Return this child node.
-    return nodes_child[0]
+    pass
 
 # ....................{ FACTORIES ~ attribute              }....................
 #FIXME: Unit test us up, please.
@@ -534,17 +510,4 @@ def make_node_fstr_field(node_expr: expr, node_sibling: AST) -> FormattedValue:
     Name
         Name node accessing this attribute in the current lexical scope.
     '''
-    assert isinstance(node_expr, expr), (
-        f'{repr(node_expr)} not AST expression node.')
-
-    # Child node encapsulating a formatting field "{node_expr.value}" in some
-    # parent node encapsulating an f-string embedding this field. For unknown
-    # reasons, the standard "ast" module requires that the "conversion"
-    # parameter be passed as a non-standard magic integer constant. Whatevahs!
-    node_fstr_field = FormattedValue(value=node_expr, conversion=-1)
-
-    # Copy source code metadata from this sibling node onto this new node.
-    copy_node_metadata(node_src=node_sibling, node_trg=node_fstr_field)
-
-    # Return this f-string field node.
-    return node_fstr_field
+    pass

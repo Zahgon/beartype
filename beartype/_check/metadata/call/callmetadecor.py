@@ -878,9 +878,7 @@ class BeartypeCallDecorMeta(BeartypeCallDecorMinimalMeta):
         calls to this method as late as possible (e.g., until an exception
         message requiring this label is actually required).
         '''
-
-        # One-liner of Ultimate Beauty: we invoke thee in this line!
-        return f'@beartyped {self.func_wrapper_name}() wrapper'
+        pass
 
 # ....................{ CONTEXTS                           }....................
 @contextmanager
@@ -905,18 +903,7 @@ def new_decor_meta(**kwargs) -> Iterator[BeartypeCallDecorMeta]:
     BeartypeCallDecorMeta
         Beartype call metadata describing this callable.
     '''
-
-    # Beartype call metadata initialized with these parameters.
-    decor_meta = make_decor_meta(**kwargs)
-
-    # Attempt to yield this metadata to the caller, typically accessible as:
-    #     with new_decor_meta(...) as decor_meta:
-    try:
-        yield decor_meta
-    # Regardless of whether the caller raises an exception from within the body
-    # of that "with" block, deinitialize this metadata.
-    finally:
-        cull_decor_meta(decor_meta)
+    pass
 
 # ....................{ FACTORIES                          }....................
 #FIXME: Unit test us up, please.

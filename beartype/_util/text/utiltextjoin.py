@@ -169,15 +169,7 @@ def join_delimited_conjunction(strs: IterableStrs, **kwargs) -> str:
     str
         Conjunctive concatenation of these strings.
     '''
-
-    # One of us. We accept one-liner. One of us.
-    return join_delimited(
-        strs=strs,
-        delimiter_if_two=' and ',
-        delimiter_if_three_or_more_nonlast=', ',
-        delimiter_if_three_or_more_last=', and ',
-        **kwargs
-    )
+    pass
 
 # ....................{ JOINERS ~ disjunction              }....................
 def join_delimited_disjunction(strs: IterableStrs, **kwargs) -> str:

@@ -1078,8 +1078,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._conf_kwargs
+        pass
 
     # ..................{ PROPERTIES ~ options               }..................
     # Read-only public properties with which this configuration was originally
@@ -1111,8 +1110,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._hint_overrides
+        pass
 
 
     @property
@@ -1128,8 +1126,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._strategy
+        pass
 
 
     @property
@@ -1145,8 +1142,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._warning_cls_on_decorator_exception
+        pass
 
     # ..................{ PROPERTIES ~ options : bool        }..................
     @property
@@ -1171,8 +1167,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._is_color
+        pass
 
 
     @property
@@ -1185,8 +1180,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._is_debug
+        pass
 
 
     @property
@@ -1200,8 +1194,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._is_random
+        pass
 
     # ..................{ PROPERTIES ~ options : bool : pep  }..................
     @property
@@ -1215,8 +1208,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._is_pep484_tower
+        pass
 
 
     @property
@@ -1237,8 +1229,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._is_pep557_fields
+        pass
 
     # ..................{ PROPERTIES ~ options : claw        }..................
     @property
@@ -1254,8 +1245,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._claw_decor_place_func
+        pass
 
 
     @property
@@ -1271,8 +1261,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._claw_decor_place_type
+        pass
 
 
     @property
@@ -1288,8 +1277,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._claw_is_pep526
+        pass
 
 
     @property
@@ -1307,8 +1295,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._claw_skip_package_names
+        pass
 
     # ..................{ PROPERTIES ~ options : violation   }..................
     @property
@@ -1324,8 +1311,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._violation_door_type
+        pass
 
 
     @property
@@ -1341,8 +1327,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._violation_param_type
+        pass
 
 
     @property
@@ -1358,8 +1343,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._violation_return_type
+        pass
 
 
     @property
@@ -1375,8 +1359,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._violation_type
+        pass
 
 
     @property
@@ -1393,8 +1376,7 @@ class BeartypeConf(object):
         :meth:`__new__`
             Further details.
         '''
-
-        return self._violation_verbosity
+        pass
 
     # ..................{ DUNDERS                            }..................
     def __eq__(self, other: object) -> bool:

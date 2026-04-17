@@ -52,18 +52,7 @@ def warnings_ignored() -> Iterator[None]:
     https://stackoverflow.com/a/14463362/2809027
         StackOverflow answer strongly inspiring this implementation.
     '''
-
-    # If the active Python interpreter targets Python > 3.11, prefer an
-    # efficient one-liner yielding the desired outcome. Get it? Yielding? ...heh
-    if IS_PYTHON_AT_LEAST_3_11:
-        with catch_warnings(action='ignore'):  # type: ignore[call-overload]
-            yield
-    # Else, the active Python interpreter targets Python <= 3.10. In this case,
-    # fallback to an inefficient generator yielding the same outcome.
-    else:
-        with catch_warnings():
-            simplefilter('ignore')
-            yield
+    pass
 
 # ....................{ WARNERS                            }....................
 # If the active Python interpreter targets Python >= 3.12, the standard

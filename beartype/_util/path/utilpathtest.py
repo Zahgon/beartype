@@ -58,20 +58,7 @@ def die_if_subpath(
     exception_cls
         If this child path is a child of this parent path.
     '''
-
-    # If this child path is a child of this parent path...
-    if is_subpath(parent_pathname, child_pathname):
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not exception type.')
-        assert isinstance(exception_prefix, str), (
-            f'{repr(exception_prefix)} not string.')
-
-        # Raise an exception.
-        raise exception_cls(
-            f'{exception_prefix}'
-            f'child path "{child_pathname}" is relative to '
-            f'parent path "{parent_pathname}".'
-        )
+    pass
     # Else, this child path is *NOT* a child of this parent path.
 
 # ....................{ RAISERS ~ dir                      }....................
@@ -104,22 +91,7 @@ def die_if_dir(
     exception_cls
         If a directory with the passed dirname already exists.
     '''
-    assert isinstance(dirname, PathnameLikeTuple), (
-        f'{repr(dirname)} neither string nor "Path" object.')
-
-    # High-level "Path" object encapsulating this dirname.
-    dirname_path = Path(dirname)
-
-    # If a directory with this dirname already exists...
-    if dirname_path.is_dir():
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not exception type.')
-        assert isinstance(exception_prefix, str), (
-            f'{repr(exception_prefix)} not string.')
-
-        # Raise an exception.
-        raise exception_cls(
-            f'{exception_prefix}path "{dirname_path}" already directory.')
+    pass
     # Else, *NO* directory with this dirname exists.
 
 
@@ -204,24 +176,7 @@ def die_unless_file(
     exception_cls
         If *no* file with the passed filename exists.
     '''
-
-    # High-level "Path" object encapsulating this filename.
-    filename_path = Path(filename)
-
-    # If either no path with this pathname exists *OR* a path with this pathname
-    # exists but this path is not a file...
-    if not filename_path.is_file():
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not type.')
-
-        # If no path with this pathname exists, raise an appropriate exception.
-        if not filename_path.exists():
-            raise exception_cls(f'File "{filename_path}" not found.')
-        # Else, a path with this pathname exists.
-
-        # By elimination, a path with this pathname exists but this path is not
-        # a file. In this case, raise an appropriate exception.
-        raise exception_cls(f'Path "{filename_path}" not file.')
+    pass
     # Else, a file with this filename exists.
 
 
@@ -254,26 +209,7 @@ def die_unless_file_executable(
         * No file with the passed filename exists.
         * This file exists but is not executable by the current user.
     '''
-
-    # If *NO* file with this filename exists, raise an exception.
-    die_unless_file(filename=filename, exception_cls=exception_cls)
-    # Else, a file with this filename exists.
-
-    # Note that this logic necessarily leverages the low-level "os.path"
-    # submodule rather than the object-oriented "pathlib.Path" class, which
-    # currently lacks *ANY* public facilities for introspecting permissions
-    # (including executability) as of Python 3.12. This is why we sigh.
-
-    # Reduce this possible high-level "Path" object to a low-level filename.
-    filename_str = str(filename)
-
-    # If the current user has *NO* permission to execute this file...
-    if not is_path_permissions(filename_str, X_OK):
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not type.')
-
-        # Raise an appropriate exception.
-        raise exception_cls(f'File "{filename_str}" not executable.')
+    pass
     # Else, the current user has permission to execute this file. Ergo, this
     # file is an executable file with respect to this user.
 
@@ -303,19 +239,4 @@ def is_subpath(
     https://stackoverflow.com/a/66626684/2809027
         StackOverflow answer strongly inspiring this implementation.
     '''
-    assert isinstance(parent_pathname, PathnameLikeTuple), (
-        f'{repr(parent_pathname)} neither string nor "Path" object.')
-    assert isinstance(child_pathname, PathnameLikeTuple), (
-        f'{repr(child_pathname)} neither string nor "Path" object.')
-
-    # High-level "Path" objects encapsulating these pathnames.
-    parent_path = Path(parent_pathname)
-    child_path = Path(child_pathname)
-
-    # Canonicalize these possibly relative pathnames into absolute pathnames,
-    # silently resolving both relative pathnames and symbolic links as needed.
-    parent_path = parent_path.resolve()
-    child_path = child_path.resolve()
-
-    # Return true only if this child path is a child of this parent path.
-    return child_path.is_relative_to(parent_path)
+    pass

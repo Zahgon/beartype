@@ -58,19 +58,7 @@ def die_unless_hint_pep484585_generic_unsubbed(
     exception_cls
         If this hint is *not* an unsubscripted generic.
     '''
-
-    # If this hint is *NOT* an unsubscripted generic...
-    if not is_hint_pep484585_generic_unsubbed(hint):
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not type.')
-        assert isinstance(exception_prefix, str), (
-            f'{repr(exception_prefix)} not string.')
-
-        # Raise an exception of this type prefixed by this prefix.
-        raise exception_cls(
-            f'{exception_prefix}type hint {repr(hint)} not '
-            f'PEP 484 or 585 unsubscripted generic.'
-        )
+    pass
     # Else, this hint is an unsubscripted generic.
 
 # ....................{ TESTERS                            }....................

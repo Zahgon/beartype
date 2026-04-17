@@ -124,36 +124,7 @@ class BeartypeNodeScopes(list[BeartypeNodeScope]):
             If this node type is neither of the :class:`ast.ClassDef` or
             :class:`ast.FunctionDef` types.
         '''
-
-        # If this node does *NOT* declare a new nested lexical scope (i.e., by
-        # defining a new class or callable), raise an exception.
-        if node_type not in TYPES_NODE_LEXICAL_SCOPE:
-            raise _BeartypeClawAstNodeScopesException(
-                f'AST scope "{name}" node type {repr(node_type)} '
-                f'not that of nested scope '
-                f'(i.e., neither "ast.ClassDef" nor "ast.FunctionDef").'
-            )
-        # Else, this node declares a new nested lexical scope.
-
-        # New AST scope describing the deepest nested lexical scope currently
-        # being visited by the parent AST transformer.
-        scope_nested = BeartypeNodeScope(
-            # For both efficiency and simplicity, reuse the same beforelist as
-            # that of the parent scope of this nested scope. If this nested
-            # scope contains one or more problematic imports and thus requires a
-            # distinct beforelist unique to this nested scope, the appropriate
-            # external AST transformer mixin will permute this parent beforelist
-            # into a new nested beforelist as needed.
-            #
-            # Note that this stack is guaranteed to *ALWAYS* be non-empty. Ergo,
-            # this parent scope is guaranteed to *ALWAYS* exist.
-            beforelist=self[-1].beforelist,
-            name=name,
-            node_type=node_type,
-        )
-
-        # Append this nested scope to the top of this stack.
-        self.append(scope_nested)
+        pass
 
     # ..................{ PROPERTIES                         }..................
     @property
@@ -168,13 +139,7 @@ class BeartypeNodeScopes(list[BeartypeNodeScope]):
         bool
             :data:`True` only if the current lexical scope is a module scope.
         '''
-
-        # Return true only if this stack contains exactly one scope, presumably
-        # describing the global scope of the currently visited module.
-        #
-        # Note that this is a negligible optimization. We could also test:
-        #     return self[-1].node_type is Module
-        return len(self) == 1
+        pass
 
 
     @property
@@ -189,6 +154,4 @@ class BeartypeNodeScopes(list[BeartypeNodeScope]):
         bool
             :data:`True` only if the current lexical scope is a class scope.
         '''
-
-        # Return true only if the current node is directly in a class scope.
-        return self[-1].node_type is ClassDef
+        pass

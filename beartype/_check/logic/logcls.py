@@ -192,29 +192,7 @@ class HintLogicABC(object, metaclass=ABCMeta):
               item.
             * ``item`` is an arbitrary item of this pith.
         '''
-
-        # Iterator to be returned.
-        container_enumerator: Enumerator = None  # type: ignore[assignment]
-
-        # If the only a single item of this container was type-checked by the
-        # parent @beartype-generated wrapper function in O(1) time, type-check
-        # only the same single item of this container in O(1) time as well.
-        if cause.conf.strategy is BeartypeStrategy.O1:
-            # 2-tuple of the index and value of an arbitrary item in the same
-            # order as the 2-tuples returned by the enumerate() builtin.
-            container_enumerator_item = self._get_cause_enumerator_item(cause)
-
-            # Iterator yielding only this 2-tuple.
-            container_enumerator = iter((container_enumerator_item,))
-        # Else, *ALL* items of this container were type-checked by the parent
-        # @beartype-generated wrapper function in O(n) time. In this case,
-        # type-check *ALL* items of this container in O(n) time as well.
-        else:
-            # Iterator yielding all indices and items of this container.
-            container_enumerator = enumerate(cause.pith)
-
-        # Return this iterator.
-        return container_enumerator
+        pass
 
     # ..................{ FACTORIES                          }..................
     def make_code(
@@ -500,21 +478,7 @@ def _get_cause_enumerator_item_collection(
           collection.
         * ``item`` is that item.
     '''
-    assert isinstance(cause.pith, Collection), (
-        f'Violation cause {repr(cause)} pith not collection.')
-
-    # Return either...
-    return (
-        # If this cause describes a sequence, a pseudo-random item of this
-        # sequence;
-        _get_cause_enumerator_item_sequence(cause)
-        if isinstance(cause.pith, Sequence) else
-        # Else, this cause does *NOT* describe a sequence. Since this cause
-        # describes a collection, this cause *MUST* necessarily describe a
-        # reiterable by elimination. In this case, the first item of this
-        # reiterable.
-        _get_cause_enumerator_item_reiterable(cause)
-    )
+    pass
 
 
 def _get_cause_enumerator_item_reiterable(
@@ -538,15 +502,7 @@ def _get_cause_enumerator_item_reiterable(
           reiterable.
         * ``item`` is that item.
     '''
-
-    # First item of this container.
-    item = next(iter(cause.pith))
-
-    # 0-based index of this item for readability purposes.
-    item_index = 0
-
-    # Return a 2-tuple "(item_index, item)" describing this item.
-    return (item_index, item)
+    pass
 
 
 def _get_cause_enumerator_item_sequence(
@@ -570,25 +526,4 @@ def _get_cause_enumerator_item_sequence(
           sequence.
         * ``item`` is that item.
     '''
-
-    # 0-based index of the *SAME EXACT ITEM* of this sequence as type-checked in
-    # the body of the parent @beartype-generated wrapper, defaulting to merely
-    # the first item of this sequence.
-    item_index = 0
-
-    # If this beartype configuration prefers non-deterministic type-checking...
-    if cause.conf.is_random:
-        assert cause.random_int is not None, (
-            f'Violation cause {repr(cause)} pseudo-random integer is "None".')
-
-        # Prefer the same pseudo-random item derived from the random integer
-        # associated with this cause.
-        item_index = cause.random_int % len(cause.pith)
-    # Else, this beartype configuration prefers deterministic type-checking. In
-    # this case, preserve the default of the first item. *LOL* <-- killmenowfam
-
-    # Pseudo-random item with this index in this sequence.
-    item = cause.pith[item_index]
-
-    # Return a 2-tuple "(item_index, item)" describing this item.
-    return (item_index, item)
+    pass

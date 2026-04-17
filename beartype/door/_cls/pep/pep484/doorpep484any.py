@@ -36,7 +36,7 @@ class AnyTypeHint(TypeHint):
 
         # Unconditionally return true, as "typing.Any" is *ALWAYS* unsubscripted
         # and could thus be said to only have ignorable arguments. Semantics.
-        return True
+        pass
 
     # ..................{ PRIVATE ~ methods                  }..................
     def _is_subhint_branch(self, branch: TypeHint) -> bool:

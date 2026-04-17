@@ -45,22 +45,7 @@ def find_cause_nonpep(cause: ViolationCause) -> ViolationCause:
     ViolationCause
         Output cause type-checking this data.
     '''
-    assert isinstance(cause, ViolationCause), f'{repr(cause)} not cause.'
-
-    # If this PEP-noncompliant hint is a tuple union, defer to the finder
-    # specific to tuple unions.
-    if isinstance(cause.hint, tuple):
-        cause_finder = find_cause_instance_types_tuple
-    # Else, this PEP-noncompliant hint is *NOT* a tuple union. In this case,
-    # assume this hint to be an isinstanceable class by deferring to the finder
-    # specific to isinstanceable classes. When this assumption is incorrect
-    # (i.e., if this hint is *NOT* an isinstanceable class), this finder raises
-    # a general-purpose human-readable exception.
-    else:
-        cause_finder = find_cause_instance_type
-
-    # Trivially defer to this finder.
-    return cause_finder(cause)
+    pass
 
 # ....................{ GETTERS ~ instance : type          }....................
 def find_cause_instance_type(cause: ViolationCause) -> ViolationCause:
@@ -247,34 +232,4 @@ def find_cause_instance_types_tuple(cause: ViolationCause) -> ViolationCause:
     ViolationCause
         Output cause type-checking this data.
     '''
-    assert isinstance(cause, ViolationCause), f'{repr(cause)} not cause.'
-
-    # This tuple union.
-    hint: TupleTypes = cause.hint  # type: ignore[assignment]
-
-    # If this hint is *NOT* a tuple union, raise an exception.
-    die_unless_hint_nonpep_tuple(
-        hint=hint,
-        exception_prefix=cause.exception_prefix,
-        exception_cls=_BeartypeCallHintPepRaiseException,
-    )
-    # Else, this hint is a tuple union.
-
-    # If this pith is an instance of one or more types in this tuple union,
-    # record that this pith satisfies this tuple union.
-    if isinstance(cause.pith, hint):
-        cause_return = cause.permute_cause(cause_str_or_none=None)
-    # Else, this pith is an instance of *NO* types in this tuple union. In
-    # this case, this pith violates this tuple union.
-    else:
-        # Machine-readable representation of this tuple union.
-        hint_repr = join_delimited_disjunction_types(
-            types=hint, is_color=cause.conf.is_color)
-
-        # Output cause to be returned, permuted from this input cause such that
-        # the output cause justification is a substring describing this failure.
-        cause_return = cause.permute_cause(cause_str_or_none=(
-            f'{represent_pith(cause.pith)} not instance of {hint_repr}'))
-
-    # Return this output cause.
-    return cause_return
+    pass

@@ -233,9 +233,7 @@ def is_func_arg_nonvariadic(*args, **kwargs) -> bool:
     exception_cls
          If that callable is *not* pure-Python.
     '''
-
-    # Return true only if this callable accepts any non-variadic parameters.
-    return bool(get_func_args_nonvariadic_len(*args, **kwargs))
+    pass
 
 # ....................{ TESTERS ~ kind : variadic          }....................
 def is_func_arg_variadic(*args, **kwargs) -> bool:

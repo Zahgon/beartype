@@ -117,9 +117,7 @@ if is_python_optimized() and not TYPE_CHECKING:
         :func:`beartype.beartype`
             Further details.
         '''
-
-        # Silently reduce to a noop by returning this object as is unmodified.
-        return obj
+        pass
 # Else, the active Python interpreter is in a standard runtime state. In this
 # case, define the @beartype decorator in the standard way.
 else:

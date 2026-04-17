@@ -78,7 +78,7 @@ class FrozenDict(dict[S, T]):
         # class method directly rather than calling super().fromkey(). While
         # seemingly equivalent, the latter implicitly calls the __setitem__()
         # dunder method of this subclass, which then raises an exception.
-        return cls(dict.fromkeys(*args, **kwargs))
+        pass
 
     # ..................{ INITIALIZERS                       }..................
     def __init__(self, *args, **kwargs) -> None:

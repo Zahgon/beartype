@@ -1017,11 +1017,7 @@ def _is_ref_proxy_resolved(cls: _BeartypeForwardRefABC) -> bool:
     bool
         :data:`True` only if this proxy has been resolved to its referent.
     '''
-    assert isinstance(cls, BeartypeForwardRefMeta), (
-        f'{repr(cls)} not beartype forward reference proxy.')
-
-    # Return true only if this proxy has been resolved to its referent.
-    return cls in _ref_proxy_to_resolved_hint
+    pass
 
 # ....................{ PRIVATE ~ (un|)cachers             }....................
 #FIXME: Unit test us up, please.
@@ -1039,11 +1035,7 @@ def _cache_ref_proxy_referent(
     referent : Hint
         Target referent type hint to be cached.
     '''
-    assert isinstance(cls, BeartypeForwardRefMeta), (
-        f'{repr(cls)} not beartype forward reference proxy.')
-
-    # Cache this target referent against this source forward reference proxy.
-    _ref_proxy_to_resolved_hint[cls] = referent
+    pass
 
 
 def _uncache_ref_proxy_referent(
@@ -1060,11 +1052,7 @@ def _uncache_ref_proxy_referent(
     referent : Hint
         Target referent type hint to be uncached.
     '''
-    assert isinstance(cls, BeartypeForwardRefMeta), (
-        f'{repr(cls)} not beartype forward reference proxy.')
-
-    # Uncache this target referent against this source forward reference proxy.
-    del _ref_proxy_to_resolved_hint[cls]
+    pass
 
 # ....................{ PRIVATE ~ factories                }....................
 #FIXME: Unit test us up, please. *sigh*

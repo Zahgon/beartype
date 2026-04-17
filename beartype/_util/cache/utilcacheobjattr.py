@@ -581,7 +581,7 @@ def set_type_attr_cached(
             # C-based __sizeof__() dunder method declared by this class.
             @wraps(cls_sizeof_old)
             def cls_sizeof(self) -> int:
-                return cls_sizeof_old(self)  # type: ignore[call-arg]
+                pass
 
             # Replace the original C-based __sizeof__() dunder method with this
             # wrapper. For safety, we intentionally call our high-level

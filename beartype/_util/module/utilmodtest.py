@@ -71,35 +71,7 @@ def die_unless_module_attr_name(
           * One or more ``.`` characters but syntactically invalid as an
             identifier (e.g., ``0h!muh?G0d.``).
     '''
-    assert isinstance(exception_cls, type), f'{repr(exception_cls)} not type.'
-    assert isinstance(exception_prefix, str), (
-        f'{repr(exception_prefix)} not string.')
-
-    # If this object is *NOT* a string, raise an exception.
-    if not isinstance(module_attr_name, str):
-        raise exception_cls(
-            f'{exception_prefix}{repr(module_attr_name)} not string.')
-    # Else, this object is a string.
-    #
-    # If this string contains *NO* "." characters and thus either is relative to
-    # the calling subpackage or refers to a builtin object, raise an exception.
-    elif '.' not in module_attr_name:
-        raise exception_cls(
-            f'{exception_prefix}"{module_attr_name}" '
-            f'relative or refers to builtin object '
-            f'(i.e., due to containing no "." characters).'
-        )
-    # Else, this string contains one or more "." characters and is thus the
-    # fully-qualified name of a non-builtin type.
-    #
-    # If this string is syntactically invalid as a fully-qualified module
-    # attribute name, raise an exception.
-    else:
-        die_unless_identifier(
-            text=module_attr_name,
-            exception_cls=exception_cls,
-            exception_prefix=exception_prefix,
-        )
+    pass
     # Else, this string is syntactically valid as a fully-qualified module
     # attribute name.
 
@@ -325,6 +297,4 @@ def is_package(package_name: str, **kwargs) -> bool:
         due to raising module-scoped exceptions from the top-level ``__init__``
         submodule of this package at importation time.
     '''
-
-    # Be the one liner you want to see in the world.
-    return is_module(f'{package_name}.__init__', **kwargs)
+    pass

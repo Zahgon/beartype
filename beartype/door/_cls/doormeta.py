@@ -173,52 +173,7 @@ class _TypeHintMetaclass(ABCMeta):
         BeartypeDecorHintPepSignException
             If the passed hint is *not* actually a PEP-compliant type hint.
         '''
-
-        # ................{ IMPORTS                            }................
-        # Avoid circular import dependencies.
-        from beartype.door._cls.util.doorclsmap import get_typehint_subclass
-
-        # ................{ REDUCTION                          }................
-        # Reduce this hint to a more amenable form suitable for mapping to a
-        # concrete "TypeHint" subclass if desired.
-        #
-        # Note that this reduction intentionally ignores the entire
-        # "beartype._check.convert" subpackage. Although submodules of that
-        # subpackage do perform various coercions, reductions, and sanitizations
-        # of low-level PEP-compliant type hints, they do so only for the express
-        # purpose of dynamic code generation. That subpackage is *NOT*
-        # general-purpose and is, in fact, harmful in this context. Why? Because
-        # that subpackage erodes the semantic meaning from numerous type hints
-        # that this subpackage necessarily preserves.
-        #
-        # ................{ REDUCTION ~ pep 484 : none         }................
-        # If this is the PEP 484-compliant "None" singleton, reduce this hint to
-        # the type of that singleton. While *NOT* explicitly defined by the
-        # "typing" module, PEP 484 explicitly supports this singleton:
-        #     When used in a type hint, the expression None is considered
-        #     equivalent to type(None).
-        #
-        # The "None" singleton is used to type callables lacking an explicit
-        # "return" statement and thus absurdly common. Ergo, detect this early.
-        if hint is None:
-            hint = NoneType  # type: ignore[assignment]
-        # Else, this is *NOT* the PEP 484-compliant "None" singleton.
-
-        # ................{ INSTANTIATION                      }................
-        # Concrete "TypeHint" subclass handling this hint if this hint is
-        # supported by an existing "TypeHint" subclass *OR* raise an exception
-        # otherwise (i.e., if this hint is currently unsupported).
-        wrapper_subclass = get_typehint_subclass(hint)  # pyright: ignore
-        # print(f'!!!!!!!!!!!!! [ in {repr(cls)}.__new__() ] !!!!!!!!!!!!!!!')
-
-        # Type hint wrapper wrapping this hint as a new singleton instance of
-        # this subclass.
-        wrapper = wrapper_subclass(hint)
-        # wrapper = super(_TypeHintMetaclass, wrapper_subclass).__call__(hint)
-        # print('!!!!!!!!!!!!! [ _TypeHintMetaclass.__call__ ] caching and returning singleton... !!!!!!!!!!!!!!!')
-
-        # Return this wrapper.
-        return wrapper
+        pass
 
 # ....................{ PRIVATE ~ mappings                 }....................
 #FIXME: Would've been nice if this had worked, but "pyright" gonna be "pyright".

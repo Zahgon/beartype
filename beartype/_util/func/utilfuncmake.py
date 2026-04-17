@@ -363,7 +363,7 @@ def make_func(
         # Define and register a cleanup callback removing that function's
         # linecache entry called if and when that function is garbage-collected.
         def _remove_func_linecache_entry():
-            linecache_cache.pop(func_filename, None)
+            pass
         finalize(func, _remove_func_linecache_entry)
     # Else, this function is *NOT* being debugged.
 

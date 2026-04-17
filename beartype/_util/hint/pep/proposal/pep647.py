@@ -67,19 +67,4 @@ def reduce_hint_pep647(
         If this type guard does *not* annotate the return of some callable
         (i.e., if ``arg_kind`` is *not* :data:`True`).
     '''
-
-    # If this type guard annotates the return of some callable, reduce this type
-    # guard to the builtin "bool" class. Sadly, type guards are useless at
-    # runtime and exist exclusively as a means of superficially improving the
-    # computational intelligence of (...wait for it) static type-checkers.
-    if pith_name == ARG_NAME_RETURN:
-        return bool
-    # Else, this type guard does *NOT* annotate the return of some callable.
-
-    # Raise an exception. Type guards are contextually valid *ONLY* as top-level
-    # return annotations.
-    raise BeartypeDecorHintPep647Exception(
-        f'{exception_prefix}PEP 647 type hint {repr(hint)} '
-        f'invalid in this type hint context (i.e., '
-        f'{repr(hint)} valid only as non-nested return annotation).'
-    )
+    pass

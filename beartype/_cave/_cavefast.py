@@ -245,8 +245,7 @@ def _lru_cache_func(n: int) -> int:
     Arbitrary :func:`functools.lru_cache`-memoized function defined solely to
     inspect various dunder attributes common to all such functions.
     '''
-
-    return n + 1
+    pass
 
 
 # If this submodule is currently being statically type-checked by a pure static

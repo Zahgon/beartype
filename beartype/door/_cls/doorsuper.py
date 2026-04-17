@@ -445,9 +445,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
           literal objects that are *not* valid hints (e.g.,
           ``typing.Literal['totally', 'not', 'a', 'type']``,).
         '''
-
-        # Who could argue with a working one-liner? Not you. Surely, not you.
-        return self._args
+        pass
 
 
     @property
@@ -456,9 +454,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         **Original type hint** (i.e., low-level PEP-compliant type hint wrapped
         by this wrapper at :meth:`TypeHint.__init__` instantiation time).
         '''
-
-        # Q: Can one-liners solve all possible problems? A: Yes.
-        return self._hint
+        pass
 
 
     @property  # type: ignore
@@ -542,16 +538,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         bool
             :data:`True` only if this type hint is ignorable.
         '''
-
-        #FIXME: If we end up calling sanify_hint_*() elsewhere, consider:
-        #* Defining a new a new private memoized "_hint_sane" property
-        #  internally caching the result of calling sanify_hint_any().
-        #* Refactor logic below to reference that property instead.
-        # Sanified hint metadata encapsulating the sanification of this hint.
-        hint_sane = sanify_hint_any(hint=self._hint)
-
-        # Return true only if this hint is ignorable.
-        return hint_sane is HINT_SANE_IGNORABLE  # pyright: ignore
+        pass
 
     # ..................{ CHECKERS                           }..................
     def die_if_unbearable(
@@ -748,13 +735,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         :func:`beartype.door.is_subhint`
             Further details.
         '''
-
-        # If the passed object is *NOT* a type hint wrapper, raise an exception.
-        die_unless_typehint(other)
-        # Else, that object is a type hint wrapper.
-
-        # Return true only if this hint is a superhint of the passed hint.
-        return other.is_subhint(self)
+        pass
 
     # ..................{ PRIVATE                            }..................
     # Subclasses are encouraged to override these concrete methods defaulting to
@@ -782,9 +763,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
           literal objects that are *not* valid hints (e.g.,
           ``typing.Literal['totally', 'not', 'a', 'type']``,).
         '''
-
-        # We are the one-liner. We are the codebase.
-        return get_hint_pep_args(self._hint)
+        pass
 
     # ..................{ PRIVATE ~ testers                  }..................
     def _is_equal(self, other: 'TypeHint') -> bool:
@@ -819,17 +798,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         bool
             :data:`True` only if this type hint is equal to that other hint.
         '''
-
-        # Return true only if both...
-        #
-        # Note that this conditional implements the trivial boolean syllogism
-        # that we all know and adore: "If A <= B and B <= A, then A == B".
-        return (
-            # This union is a subhint of that object.
-            self.is_subhint(other) and
-            # That object is a subhint of this union.
-            other.is_subhint(self)
-        )
+        pass
 
     # ..................{ PRIVATE ~ testers : subhint        }..................
     def _is_subhint(self, other: 'TypeHint') -> bool:
@@ -1005,9 +974,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         minimize space and time consumption for use cases *not* accessing this
         attribute.
         '''
-
-        # One-liner, don't fail us now!
-        return tuple(TypeHint(hint_child) for hint_child in self._args)
+        pass
 
 
     @property  # type: ignore
@@ -1023,8 +990,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         minimize space and time consumption for use cases *not* accessing this
         attribute.
         '''
-
-        return frozenset(self._args_wrapped_tuple)
+        pass
 
 
     @property  # type: ignore
@@ -1044,10 +1010,7 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         :attr:`typing.Optional`, and ``|``-delimited type objects) to be handled
         transparently *without* special cases in subclass implementations.
         '''
-
-        # Default to returning the 1-tuple containing only this instance, as
-        # *ALL* subclasses except "_HintTypeUnion" require this default.
-        return (self,)
+        pass
 
 
     @property  # type: ignore
@@ -1084,9 +1047,4 @@ class TypeHint(Generic[T_Hint], metaclass=_TypeHintMetaclass):
         property. Although related, a non-ignorable parent type hint can
         trivially have ignorable child type hints (e.g., ``list[Any]``).
         '''
-
-        # Return true only if all child type hints subscripting this parent type
-        # hint are themselves ignorable.
-        # print(f'[_is_args_ignorable] {self}._args_wrapped_tuple: {self._args_wrapped_tuple}')
-        return all(
-            hint_child.is_ignorable for hint_child in self._args_wrapped_tuple)
+        pass

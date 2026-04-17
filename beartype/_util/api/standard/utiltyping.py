@@ -62,14 +62,7 @@ def is_typing_attr(
         time. That said, the :mod:`typing` and :mod:`typing_extensions` modules
         are scrupulously tested and thus unlikely to raise such exceptions.
     '''
-
-    # Return true only if an attribute with this name is importable from either
-    # the "typing" *OR* "typing_extensions" modules.
-    #
-    # Note that positional rather than keyword arguments are intentionally
-    # passed to optimize memoization efficiency.
-    return import_typing_attr_or_none(
-        typing_attr_basename, exception_cls) is not None
+    pass
 
 # ....................{ GETTERS                            }....................
 #FIXME: Unit test us up, please.
@@ -99,37 +92,7 @@ def get_typing_attrs(typing_attr_basename: str) -> frozenset:
         Set of all attributes with the passed unqualified basename declared by
         all importable typing modules.
     '''
-    assert isinstance(typing_attr_basename, str), (
-        f'{repr(typing_attr_basename)} not string.')
-
-    # Input non-empty tuple of the unqualified basenames of all typing module
-    # attributes semantically equivalent to the passed basename, defaulting to
-    # the 1-tuple containing *ONLY* the passed basename.
-    typing_attr_basename_aliases = _TYPING_ATTR_BASENAMES_TO_ALIASES.get(
-        typing_attr_basename, (typing_attr_basename,))
-
-    # Output set of all importable attributes to be returned by this getter.
-    typing_attrs: set = set()
-
-    # For the unqualified basename of each typing module attributes semantically
-    # equivalent to the passed basename...
-    for typing_attr_basename_alias in typing_attr_basename_aliases:
-        # For the fully-qualified name of each quasi-standard typing module...
-        for typing_module_name in TYPING_MODULE_NAMES:
-            # Attribute with this name dynamically imported from that module if
-            # that module defines this attribute *OR* "None" otherwise.
-            typing_attr = import_module_attr_or_none(
-                f'{typing_module_name}.{typing_attr_basename_alias}')
-
-            # If that module defines this attribute, append this attribute to
-            # this list.
-            if typing_attr is not None:
-                typing_attrs.add(typing_attr)
-            # Else, that module fails to define this this attribute. In this
-            # case, silently continue to the next module.
-
-    # Return this set, coerced into a frozen set for caching purposes.
-    return frozenset(typing_attrs)
+    pass
 
 # ....................{ IMPORTERS                          }....................
 def import_typing_attr(

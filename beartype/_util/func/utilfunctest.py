@@ -77,26 +77,7 @@ def die_unless_func_python(
     exception_cls
          Unless the passed callable is pure-Python.
     '''
-
-    # If that callable is *NOT* pure-Python, raise an exception.
-    if not is_func_python(func):
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not class.')
-        assert issubclass(exception_cls, Exception), (
-            f'{repr(exception_cls)} not exception subclass.')
-        assert isinstance(exception_prefix, str), (
-            f'{repr(exception_prefix)} not string.')
-
-        # If that callable is uncallable, raise an appropriate exception.
-        if not callable(func):
-            raise exception_cls(f'{exception_prefix}{repr(func)} not callable.')
-        # Else, that callable is callable.
-
-        # Raise a human-readable exception.
-        raise exception_cls(
-            f'{exception_prefix}{repr(func)} not '
-            f'pure-Python function or method.'
-        )
+    pass
     # Else, that callable is pure-Python.
 
 # ....................{ RAISERS ~ codeobjable              }....................
@@ -134,14 +115,7 @@ def die_unless_func_codeobjable(
     :func:`.is_func_codeobjable`
         Further details.
     '''
-
-    # If that callable is *NOT* code-objectable, raise an exception.
-    if not is_func_codeobjable(func):
-        die_as_func_not_codeobjable(
-            func=func,
-            exception_cls=exception_cls,
-            exception_prefix=exception_prefix,
-        )
+    pass
     # Else, that callable is code-objectable.
 
 
@@ -344,21 +318,7 @@ def die_unless_func_classmethod(
     :func:`.is_func_classmethod`
         Further details.
     '''
-
-    # If this object is *NOT* a class method descriptor, raise an exception.
-    if not is_func_classmethod(func):
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not class.')
-        assert issubclass(exception_cls, Exception), (
-            f'{repr(exception_cls)} not exception subclass.')
-        assert isinstance(exception_prefix, str), (
-            f'{repr(exception_prefix)} not string.')
-
-        # Raise a human-readable exception.
-        raise exception_cls(
-            f'{exception_prefix}{repr(func)} not '
-            f'C-based unbound class method descriptor.'
-        )
+    pass
     # Else, this object is a class method descriptor.
 
 
@@ -398,21 +358,7 @@ def die_unless_func_property(
     :func:`.is_func_property`
         Further details.
     '''
-
-    # If this object is *NOT* a property method descriptor, raise an exception.
-    if not is_func_property(func):
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not class.')
-        assert issubclass(exception_cls, Exception), (
-            f'{repr(exception_cls)} not exception subclass.')
-        assert isinstance(exception_prefix, str), (
-            f'{repr(exception_prefix)} not string.')
-
-        # Raise a human-readable exception.
-        raise exception_cls(
-            f'{exception_prefix}{repr(func)} not '
-            f'C-based unbound property method descriptor.'
-        )
+    pass
     # Else, this object is a property method descriptor.
 
 
@@ -454,21 +400,7 @@ def die_unless_func_staticmethod(
     :func:`.is_func_staticmethod`
         Further details.
     '''
-
-    # If this object is *NOT* a static method descriptor, raise an exception.
-    if not is_func_staticmethod(func):
-        assert isinstance(exception_cls, type), (
-            f'{repr(exception_cls)} not class.')
-        assert issubclass(exception_cls, Exception), (
-            f'{repr(exception_cls)} not exception subclass.')
-        assert isinstance(exception_prefix, str), (
-            f'{repr(exception_prefix)} not string.')
-
-        # Raise a human-readable exception.
-        raise exception_cls(
-            f'{exception_prefix}{repr(func)} not '
-            f'C-based unbound static method descriptor.'
-        )
+    pass
     # Else, this object is a static method descriptor.
 
 # ....................{ TESTERS                            }....................
@@ -993,24 +925,7 @@ def is_func_local(func: Callable) -> bool:
     bool
         :data:`True` only if this callable is locally defined.
     '''
-
-    # Return true only if either...
-    return (
-        # That callable is a closure (in which case that closure is necessarily
-        # nested inside another callable) *OR*...
-        #
-        # Note that this tester intentionally tests for whether that callable is
-        # a closure first, as doing so efficiently reduces to a constant-time
-        # attribute test -- whereas the following test for non-closure nested
-        # callables inefficiently requires a linear-time string search.
-        is_func_closure(func) or
-        # The fully-qualified name of that callable contains one or more
-        # ".<locals>." substrings, each signifying a local callable scope. Since
-        # *ALL* callables (i.e., both pure-Python and C-based) define a
-        # non-empty "__qualname__" dunder variable containing at least their
-        # unqualified names, this simplistic test is guaranteed to be safe.
-        '.<locals>.' in func.__qualname__
-    )
+    pass
 
 
 @callable_cached

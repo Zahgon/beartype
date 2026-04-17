@@ -81,11 +81,7 @@ def is_str_ansi(text: str) -> bool:
         :data:`True` only if this text contains one or more ANSI escape
         sequences.
     '''
-    assert isinstance(text, str), f'{repr(text)} not string.'
-
-    # Return true only this compiled regex matching ANSI escape sequences
-    # returns a non-"None" match object when passed this text.
-    return _ANSI_REGEX.search(text) is not None
+    pass
 
 # ....................{ COLOURIZERS                        }....................
 def color_hint(

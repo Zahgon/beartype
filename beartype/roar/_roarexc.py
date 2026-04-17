@@ -393,22 +393,7 @@ class BeartypeHintViolation(BeartypeException):
         instances themselves.** Why? Because CPython limitations prevent those
         instances from being weakly referred to. Blame Guido and the BDFL!
         '''
-
-        # Avoid circular import dependencies.
-        from beartype._util.py.utilpyweakref import get_weakref_obj_or_repr
-
-        # Tuple of one or more strong references to the culprits previously
-        # passed to the __init__() method for those culprits that are alive
-        # *OR* their representations otherwise.
-        culprits = tuple(
-            get_weakref_obj_or_repr(
-                obj_weakref=culprit_weakref, obj_repr=culprit_repr)
-            for culprit_weakref, culprit_repr in self._culprits_weakref_and_repr
-        )
-        # print(f'culprits_weakref_and_repr: {self._culprits_weakref_and_repr}')
-
-        # Return these culprits.
-        return culprits
+        pass
 
 # ....................{ CALL                               }....................
 class BeartypeCallException(BeartypeException):
@@ -1082,7 +1067,7 @@ class BeartypeDecorHintPep585Exception(BeartypeDecorHintPepException):
 
     @property
     def pep_number(self) -> str:
-        return 'PEP 585'
+        pass
 
 
 class BeartypeDecorHintPep646692Exception(BeartypeDecorHintPepException):
@@ -1098,7 +1083,7 @@ class BeartypeDecorHintPep646692Exception(BeartypeDecorHintPepException):
 
     @property
     def pep_number(self) -> str:
-        return 'PEP 646 or 692'
+        pass
 
 # ....................{ DECORATOR ~ param                  }....................
 class BeartypeDecorParamException(BeartypeDecorException):

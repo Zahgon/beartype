@@ -88,56 +88,7 @@ class CallableTypeHint(TypeHint):
         #     >>> Callable[()]
         #     TypeError: Callable must be used as Callable[[arg, ...], result].
         # args = self._args
-        args = super()._make_args()
-
-        # Note that this branch may be literally unreachable, as an
-        # unsubscripted "Callable" should already be implicitly handled by the
-        # "ClassTypeHint" subclass. Nonetheless, this branch exists for safety.
-        if not args:  # pragma: no cover
-            args = (..., Any,)
-        else:
-            # Parameters type hint(s) subscripting this callable type hint.
-            # Note that this:
-            # * May be a special object (e.g., ellipsis) rather than a tuple of
-            #   zero or more parameter type hints.
-            # * Has the essential side effect of eliminating harmful edge cases
-            #   (e.g., "Callable[[()], Any]", which is semantically but *NOT*
-            #   syntactically equivalent to "Callable[[], Any]").
-            args_params = get_hint_pep484585_callable_params(self._hint)
-
-            # Return type hint subscripting this callable type hint.
-            args_return = get_hint_pep484585_callable_return(self._hint)
-
-            # Sign uniquely identifying this parameter list if any *OR* "None".
-            hint_args_sign = get_hint_pep_sign_or_none(args_params)  # pyright: ignore
-
-            # If this hint was first subscripted by a PEP 612-compliant
-            # parameter type hint, raise an exception. *sigh*
-            if hint_args_sign in HINT_SIGNS_PEP612_CALLABLE_ARGLIST:
-                raise BeartypeDoorPepUnsupportedException(
-                    f'PEP 484 or 585 callable type hint {repr(self._hint)} '
-                    f'PEP 612 child type hint {repr(args_params)} '
-                    f'currently unsupported.'
-                )
-            # Else, this hint was *NOT* first subscripted by a PEP
-            # 612-compliant parameter type hint.
-
-            # Parameters type hint(s) subscripting this callable type hint,
-            # coerced into a 1-tuple if *NOT* already a tuple.
-            args_params_tuple = (
-                args_params
-                if isinstance(args_params, tuple) else
-                (args_params,)
-            )
-
-            # Recreate the tuple of child type hints subscripting this parent
-            # callable type hint from the tuple of argument type hints
-            # introspected above. Why? Because the latter is saner than the
-            # former in edge cases (e.g., ellipsis, empty argument lists).
-            args = args_params_tuple + (args_return,)
-
-        # Return these child hints.
-        return args
+        pass
 
     # ..................{ PRIVATE ~ properties               }..................
     @property
@@ -145,52 +96,7 @@ class CallableTypeHint(TypeHint):
     def _args_wrapped_tuple(self) -> TupleTypeHints:
 
         # Tuple of all child type hints subscripting this callable type hint.
-        args = self._args
-
-        # Number of child type hints subscripting this callable type hint.
-        args_len = len(args)
-
-        # Tuple of all child type hint wrappers subscripting this callable type
-        # hint wrapper, initialized to the empty tuple for simplicity.
-        args_wrapped_tuple: TupleTypeHints = ()
-
-        # If this type hint is unsubscripted, return the empty tuple.
-        if not args_len:
-            pass
-        # Else, this type hint is subscripted by one or more child type hints.
-        #
-        # If this type hint is subscripted by exactly one child type hint, then
-        # that child type hint signifies this callable's return type hint,
-        # implying this callable accepts *NO* parameters. In this case...
-        elif args_len == 1:
-            # Return a 2-tuple consisting of...
-            args_wrapped_tuple = (
-                # Empty parameter list.
-                TypeHint(Tuple[()]),  # pyright: ignore
-                # Return type hint.
-                TypeHint(args[-1]),
-            )
-        # Else, this type hint is subscripted by two or more child type hints.
-        #
-        # If the first child type hint subscripting this type hint is an
-        # ellipsis (i.e., "..."), this callable accepts *ANY* parameters of
-        # *ANY* arbitrary types. In this case...
-        elif args[0] is ...:
-            # Return a 2-tuple consisting of...
-            args_wrapped_tuple = (
-                # Variadic parameter list.
-                TypeHint(Any),  # pyright: ignore
-                # Return type hint.
-                TypeHint(args[-1]),
-            )
-        # Else, the first child type hint subscripting this type hint is *NOT*
-        # an ellipsis. In this case, defer to the superclass approach.
-        else:
-            args_wrapped_tuple = super()._args_wrapped_tuple
-
-        # Return this tuple.
-        # print(f'Callable: {self._hint}; args: {self._args}; args_wrapped_tuple: {args_wrapped_tuple}')
-        return args_wrapped_tuple
+        pass
 
     # ..................{ PROPERTIES ~ hints                 }..................
     @property  # type: ignore
@@ -209,8 +115,7 @@ class CallableTypeHint(TypeHint):
           subscripted by an ellipsis as ``Callable[..., ???]``), this is the
           1-tuple ``(TypeHint(Any),)``.
         '''
-
-        return self._args_wrapped_tuple[:-1]
+        pass
 
 
     @property
@@ -218,26 +123,25 @@ class CallableTypeHint(TypeHint):
         '''
         Return type hint subscripting this callable type hint.
         '''
-
-        return self._args_wrapped_tuple[-1]
+        pass
 
     # ..................{ PROPERTIES ~ bools                 }..................
     @property
     def is_ignorable(self) -> bool:
         # Callable[..., Any] (or just `Callable`)
-        return self.is_params_ignorable and self.is_return_ignorable
+        pass
 
 
     @property
     def is_params_ignorable(self) -> bool:
         # Callable[..., ???]
-        return self._args[0] is Ellipsis
+        pass
 
 
     @property
     def is_return_ignorable(self) -> bool:
         # Callable[???, Any]
-        return self.return_hint.is_ignorable
+        pass
 
     # ..................{ PRIVATE ~ testers                  }..................
     def _is_subhint_branch(self, branch: TypeHint) -> bool:

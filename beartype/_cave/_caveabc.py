@@ -85,18 +85,7 @@ def _check_methods(C: type, *methods: str):
         * ``NotImplemented`` if this class fails to define one or more of these
           methods.
     '''
-
-    mro = C.__mro__
-    for method in methods:
-        for B in mro:  # pyright: ignore[reportGeneralTypeIssues]
-            if method in B.__dict__:
-                if B.__dict__[method] is None:
-                    return NotImplemented
-                break
-        else:
-            return NotImplemented
-
-    return True
+    pass
 
 # ....................{ SUPERCLASSES                       }....................
 class BoolType(object, metaclass=ABCMeta):

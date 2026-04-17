@@ -598,9 +598,7 @@ class BeartypeForwardScope(LexicalScope):
         BeartypeDecorHintForwardRefException
             If this type hint name is *not* a valid Python identifier.
         '''
-
-        # Trivial one-liner, we invoke thee!
-        return self[hint_name]
+        pass
 
     # ..................{ MINIFIERS                          }..................
     def minify(self) -> LexicalScope:

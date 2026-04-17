@@ -28,7 +28,7 @@ class UnionTypeHint(TypeHint):
     # ..................{ PRIVATE ~ properties               }..................
     @property
     def _branches(self) -> Iterable[TypeHint]:
-        return self._args_wrapped_tuple
+        pass
 
     # ..................{ PRIVATE ~ testers                  }..................
     def _is_subhint(self, other: TypeHint) -> bool:

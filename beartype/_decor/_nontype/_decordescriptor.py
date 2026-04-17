@@ -48,66 +48,7 @@ def beartype_descriptor_boundmethod(
     BeartypeableT
         New pure-Python callable wrapping this descriptor with type-checking.
     '''
-    assert is_func_boundmethod(descriptor), (
-        f'{repr(descriptor)} not builtin bound method descriptor.')
-
-    # Avoid circular import dependencies.
-    from beartype._decor._nontype.decornontype import beartype_func
-
-    # Possibly C-based callable wrappee object encapsulated by this descriptor.
-    descriptor_wrappee = unwrap_func_boundmethod_once(descriptor)
-
-    # Instance object to which this descriptor was bound at instantiation time.
-    descriptor_self = get_func_boundmethod_self(descriptor)
-
-    # Pure-Python unbound function decorating the similarly pure-Python unbound
-    # function encapsulated by this descriptor with type-checking.
-    #
-    # Note that doing so:
-    # * Implicitly propagates dunder attributes (e.g., "__annotations__",
-    #   "__doc__") from the original function onto this new function. Good.
-    # * Does *NOT* implicitly propagate the same dunder attributes from the
-    #   original descriptor encapsulating the original function to the new
-    #   descriptor (created below) encapsulating this wrapper function. Bad!
-    #   Thankfully, only one such attribute exists as of this time: "__doc__".
-    #   We propagate this attribute manually below.
-    func_checked = beartype_func(func=descriptor_wrappee, **kwargs)  # pyright: ignore
-
-    # New instance method descriptor rebinding this function to the instance of
-    # the class bound to the prior descriptor.
-    #
-    # Note that:
-    # * This is required, as the "__func__" attribute of method descriptors is
-    #   read-only. Attempting to do so raises this non-human-readable exception:
-    #     AttributeError: readonly attribute
-    #   This implies that the passed descriptor *CANNOT* be meaningfully
-    #   modified. Our only recourse is to define an entirely new descriptor,
-    #   effectively discarding the passed descriptor, which will then be
-    #   subsequently garbage-collected. This is wasteful. This is Python.
-    # * This can also be implemented by abusing the descriptor protocol:
-    #       descriptor_new = descriptor_func_new.__get__(descriptor.__self__)
-    #   That said, there exist *NO* benefits to doing so. Indeed, doing so only
-    #   reduces the legibility and maintainability of this operation.
-    descriptor_new = MethodBoundInstanceOrClassType(
-        func_checked, descriptor_self)  # type: ignore[return-value]
-
-    #FIXME: Actually, Python doesn't appear to support this at the moment.
-    #Attempting to do so raises this exception:
-    #    AttributeError: attribute '__doc__' of 'method' objects is not writable
-    #
-    #See also this open issue on the Python bug tracker requesting this be
-    #resolved. Sadly, Python has yet to resolve this:
-    #    https://bugs.python.org/issue47153
-    # # Propagate the docstring from the prior to the new descriptor.
-    # #
-    # # Note that Python guarantees this attribute to exist. If the original
-    # # function had a docstring, this attribute is non-"None"; else, this
-    # # attribute is "None". In either case, this attribute exists. Ergo,
-    # # additional validation is neither required nor desired.
-    # descriptor_new.__doc__ = descriptor.__doc__
-
-    # Return this new descriptor, implicitly destroying the prior descriptor.
-    return descriptor_new  # type: ignore[return-value]
+    pass
 
 
 def beartype_descriptor_decorator_builtin_property(

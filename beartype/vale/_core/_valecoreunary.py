@@ -97,35 +97,7 @@ class BeartypeValidatorUnaryABC(BeartypeValidator, metaclass=ABCMeta):
     ) -> str:
 
         # Line diagnosing this object against this negated parent validator.
-        line_outer_prefix = format_diagnosis_line(
-            validator_repr='(',
-            indent_level_outer=indent_level_outer,
-            indent_level_inner=indent_level_inner,
-            is_obj_valid=self.is_valid(obj),
-        )
-
-        # Line diagnosing this object against this non-negated child validator
-        # with an increased indentation level for readability.
-        line_inner_operand = self._validator_operand.get_diagnosis(
-            obj=obj,
-            indent_level_outer=indent_level_outer,
-            indent_level_inner=indent_level_inner + CODE_INDENT_1,
-            **kwargs
-        )
-
-        # Line providing the suffixing ")" delimiter for readability.
-        line_outer_suffix = format_diagnosis_line(
-            validator_repr=')',
-            indent_level_outer=indent_level_outer,
-            indent_level_inner=indent_level_inner,
-        )
-
-        # Return these lines concatenated.
-        return (
-            f'{self._operator_symbol}{line_outer_prefix}\n'
-            f'{line_inner_operand}\n'
-            f'{line_outer_suffix}'
-        )
+        pass
 
     # ..................{ ABSTRACT                           }..................
     # Abstract methods required to be concretely implemented by subclasses.
@@ -179,7 +151,7 @@ class BeartypeValidatorNegation(BeartypeValidatorUnaryABC):
     # ..................{ PROPERTIES                         }..................
     @property
     def _operator_symbol(self) -> str:
-        return '~'
+        pass
 
 # ....................{ PRIVATE ~ validators               }....................
 def _validate_operand(
@@ -201,13 +173,5 @@ def _validate_operand(
     BeartypeValeSubscriptionException
         If this operand is *not* a beartype validator.
     '''
-
-    #FIXME: Unit test us up, please.
-    # If this operand is *NOT* a beartype validator, raise an exception.
-    if not isinstance(validator_operand, BeartypeValidator):
-        raise BeartypeValeSubscriptionException(
-            f'Beartype "{self._operator_symbol}" validator operand '
-            f'{represent_object(validator_operand)} not beartype '
-            f'validator (i.e., "beartype.vale.Is*[...]" object).'
-        )
+    pass
     # Else, this operand is a beartype validator.

@@ -32,8 +32,7 @@ async def _noop_context_manager_async() -> AsyncIterator[None]:
     defined solely to inspect various dunder attributes common to all such
     managers.
     '''
-
-    yield
+    pass
 
 
 @contextmanager
@@ -42,8 +41,7 @@ def _noop_context_manager_sync() -> Iterator[None]:
     Arbitrary :func:`contextlib.contextmanager`-based context manager defined
     solely to inspect various dunder attributes common to all such managers.
     '''
-
-    yield
+    pass
 
 
 CONTEXTLIB_ASYNCCONTEXTMANAGER_CODEOBJ_NAME = (

@@ -321,41 +321,7 @@ def _is_fake_proxy_superclass(
     TypeError
         If this user-defined type is *not* actually a type.
     '''
-
-    # Note that this test *CANNOT* be written as:
-    #     isinstance(fake_proxy, _BeartypeForwardRefFakeABC)
-    #
-    # Why? Because doing so would ignite infinite recursion by implicitly
-    # calling the _BeartypeForwardRefFakeMeta.__instancecheck__() dunder method,
-    # which directly calls this lower-level tester. Metaclasses do be like that.
-    # print(f'fake_proxy: {repr(fake_proxy}); class: {repr(fake_proxy.__class__)}')
-    assert fake_proxy.__class__ is _BeartypeForwardRefFakeMeta, (
-        f'{repr(fake_proxy)} not forward reference fake proxy.')
-
-    # If this type is *NOT* a type, raise the standard "TypeError" exception
-    # expected to be raised by the issubclass() builtin in this common edge
-    # case. issubclass() implicitly calls the
-    # _BeartypeForwardRefFakeMeta.__subclasscheck__() dunder method, which
-    # directly calls this lower-level tester. To do so trivially, we
-    # intentionally masquerade as the root "object" superclass.
-    #
-    # Weird Python is worky Python. Metaclasses do still be like that.
-    issubclass(subclass, object)  # type: ignore[arg-type]
-
-    # Unqualified basename of this fake proxy, localized purely as a negligible
-    # microoptimization. It's best not to ask questions. You're thinking them,
-    # though, aren't you!?
-    fake_proxy_basename = fake_proxy.__name__
-
-    # Return true only if...
-    return any(
-        # The unqualified basename of this fake proxy is that of this transitive
-        # superclass...
-        fake_proxy_basename == subclass_superclass.__name__
-        # For each transitive superclass in the method resolution order (MRO) of
-        # this other type (including this other type itself).
-        for subclass_superclass in subclass.__mro__
-    )
+    pass
 
 # ....................{ PRIVATE ~ tuples                   }....................
 _BeartypeForwardRefFakeABC_BASES = (_BeartypeForwardRefFakeABC,)

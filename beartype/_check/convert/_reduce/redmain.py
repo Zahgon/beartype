@@ -576,12 +576,7 @@ def reduce_hint_any(
         * Else, this unignorable hint is irreducible. In this case, metadata
           encapsulating this hint unmodified.
     '''
-
-    # Default to the beartype external call metadata singleton.
-    kwargs['call_meta'] = BEARTYPE_CALL_EXTERNAL_META
-
-    # Return this hint possibly reduced to a lower-level hint.
-    return reduce_hint(hint=hint, **kwargs)
+    pass
 
 # ....................{ PRIVATE ~ reducers                 }....................
 def _reduce_hint_cached(
@@ -619,44 +614,7 @@ def _reduce_hint_cached(
           memoized reducer, metadata encapsulating this reduction.
         * Else, this hint unmodified as is.
     '''
-    assert (
-        hint_sign_seed is SENTINEL or
-        isinstance(hint_sign_seed, NoneTypeOr[HintSign])
-    ), (f'{repr(hint_sign_seed)} neither hint sign, "None", nor sentinel.')
-
-    # Reduced hint to be returned, defaulting to the passed unreduced hint.
-    hint_or_sane: HintOrSane = hint
-
-    # Sign uniquely identifying this hint if this hint is PEP-compliant *OR*
-    # "None" otherwise (e.g., if this hint is PEP-noncompliant), defined as
-    # either...
-    hint_sign = (
-        # If the caller did *NOT* explicitly pass a sign with which to seed this
-        # reduction, the standard sign uniquely identifying this hint;
-        get_hint_pep_sign_or_none(hint)
-        if hint_sign_seed is SENTINEL else
-        # Else, the caller explicitly passed a sign with which to seed this
-        # reduction. In this case, that sign.
-        hint_sign_seed
-    )
-
-    # Memoized reducer reducing this hint if any *OR* "None" otherwise.
-    hint_reducer_cached = HINT_SIGN_TO_REDUCE_HINT_CACHED_get(hint_sign)  # type: ignore[arg-type]
-
-    # If a memoized reducer reduces this hint...
-    if hint_reducer_cached is not None:
-        # print(f'[_reduce_hint_cached] Reducing cached hint {repr(hint)}...')
-
-        # Reduce this hint by calling this reducer.
-        #
-        # Note that parameters are intentionally passed positionally to this
-        # possibly memoized callable prohibiting keyword parameters.
-        hint_or_sane = hint_reducer_cached(hint)
-    # Else, *NO* memoized reducer reduces this hint. In this case, preserve this
-    # hint as is.
-
-    # Return this possibly reduced hint.
-    return hint_or_sane
+    pass
 
 
 def _reduce_hint_uncached(
@@ -697,41 +655,7 @@ def _reduce_hint_uncached(
           unmemoized reducer, metadata encapsulating this reduction.
         * Else, this hint unmodified as is.
     '''
-    assert (
-        hint_sign_seed is SENTINEL or
-        isinstance(hint_sign_seed, NoneTypeOr[HintSign])
-    ), (f'{repr(hint_sign_seed)} neither hint sign, "None", nor sentinel.')
-
-    # Reduced hint to be returned, defaulting to the passed unreduced hint.
-    hint_or_sane: HintOrSane = hint
-
-    # Sign uniquely identifying this hint if this hint is PEP-compliant *OR*
-    # "None" otherwise (e.g., if this hint is PEP-noncompliant), defined as
-    # either...
-    hint_sign = (
-        # If the caller did *NOT* explicitly pass a sign with which to seed this
-        # reduction, the standard sign uniquely identifying this hint;
-        get_hint_pep_sign_or_none(hint)
-        if hint_sign_seed is SENTINEL else
-        # Else, the caller explicitly passed a sign with which to seed this
-        # reduction. In this case, that sign.
-        hint_sign_seed
-    )
-
-    # Unmemoized reducer reducing this hint if any *OR* "None" otherwise.
-    hint_reducer_uncached = HINT_SIGN_TO_REDUCE_HINT_UNCACHED_get(hint_sign)  # type: ignore[arg-type]
-
-    # If an unmemoized reducer reduces this hint...
-    if hint_reducer_uncached is not None:
-        # print(f'[_reduce_hint_cached] Reducing cached hint {repr(hint)}...')
-
-        # Reduce this hint by calling this reducer.
-        hint_or_sane = hint_reducer_uncached(hint=hint, **kwargs)
-    # Else, *NO* unmemoized reducer reduces this hint. In this case, preserve
-    # this hint as is.
-
-    # Return this possibly reduced hint.
-    return hint_or_sane
+    pass
 
 
 def _reduce_hint_overrides(
@@ -781,106 +705,7 @@ def _reduce_hint_overrides(
         * Else, this unignorable hint is *not* overridden by another hint, this
           hint as is.
     '''
-
-    # Overridden hint to be returned, defaulting to the passed un-overridden
-    # hint for safety and simplicity.
-    hint_or_sane: HintOrSane = hint
-
-    # Attempt to...
-    #
-    # Note that the is_object_hashable() tester is internally implemented with
-    # the same Easier to Ask for Permission than Forgiveness (EAFP)-based
-    # "try-except" block and is thus equally inefficient. In fact, the current
-    # approach avoids an extraneous call to that tester and is thus marginally
-    # faster. (Emphasis on "marginally.")
-    try:
-        # Hint overriding this hint if this configuration overrides this hint
-        # *OR* the sentinel otherwise (i.e., if this hist is *NOT* overridden).
-        #
-        # Note that this raises "TypeError" when this hint is unhashable.
-        # print(f'Overriding hint {repr(hint)} via {repr(conf.hint_overrides)}...')
-        hint_overridden = conf.hint_overrides.get(hint, SENTINEL)
-
-        # If neither...
-        if not (
-            # This hint is not overridden *NOR*...
-            hint_overridden is SENTINEL or
-            # Else, this hint is overridden.
-            #
-            # If this overridden hint is recursive, this hint has already been
-            # overridden by a previously performed reduction. Avoid attempting
-            # to reoverride this hint again with the same hint override; doing
-            # so would provoke infinite recursion. Instead, preserve this
-            # un-overridden hint by returning this hint as is.
-            #
-            # Certainly, various approaches to type-checking recursive hints
-            # exists. @beartype currently embraces the easiest, fastest, and
-            # laziest approach: just ignore all recursion! \o/
-            #
-            # Note that:
-            # * This tester raises "TypeError" when this hint is unhashable.
-            # * This tester intentionally accepts the default value "0" for the
-            #   optional parameter "hint_recursable_depth_max", ensuring this
-            #   overridden hint is considered to be recursive when this
-            #   overridden hint has already been overridden a single time.
-            #   Unlike comparable kinds of recursable hints (e.g., PEP
-            #   695-compliant type aliases), hint overrides typically convey
-            #   *NO* internal structure and thus merit *NO* deeper recursion.
-            #   Hint overrides instruct @beartype to perform simple
-            #   global-search-and-replacements on exactly matching type hints.
-            #   Recursion is neither desirable nor necessary.
-            #
-            #   Consider the prototypical hint overrides of
-            #   "BeartypeConf(hint_overrides={float: float | int})". After
-            #   expanding the builtin "float" type to the PEP 604-compliant
-            #   union "float | int", attempting to recursively re-apply the same
-            #   expansion silently reduces to a noop (e.g., "float | int"
-            #   expands to "float | float | int", equal to "float | int").
-            is_hint_recursive(hint=hint, hint_parent_sane=hint_parent_sane)
-        ):
-            # Then this overridden hint is *NOT* recursive, implying this hint
-            # *CANNOT* have already been overridden by a previously performed
-            # reduction. Why? Because an overridden hint revisited by the
-            # current breadth-first search would by definition by recursive.
-
-            # Metadata guarding this hint against infinite recursion, recording
-            # this hint as already having been overridden *BEFORE* reducing and
-            # thus forgetting this hint.
-            #
-            # Note that this intentionally replaces the metadata encapsulating
-            # the sanification of the parent hint of this hint by the metadata
-            # encapsulating the sanification of this hint itself. Doing so
-            # ensures that the next reducer passed the "hint_parent_sane"
-            # parameter preserves this metadata during its reduction. Since the
-            # most recent reducer call received the prior "hint_parent_sane"
-            # parameter, that reducer has already safely preserved the parent
-            # metadata by compositing that metadata into this
-            # "hint_or_sane_curr" metadata that that reducer returned. Srsly.
-            hint_or_sane = make_hint_sane_recursable(
-                # The recursable form of this overridden hint is the
-                # pre-overridden hint tested above by the is_hint_recursive()
-                # recursion guard.
-                hint_recursable=hint,
-                # The non-recursable form of this overridden hint is the
-                # overridden hint encapsulated by the metadata returned by this
-                # factory.
-                hint_nonrecursable=hint_overridden,
-                hint_parent_sane=hint_parent_sane,
-            )
-        # Else, this overridden hint is recursive. In this case, preserve this
-        # un-overridden hint rather than reducing this hint to the ignorable
-        # "HINT_SANE_IGNORABLE" singleton. Why? Because un-overridden hints are
-        # themselves valid type hints and thus have semantic meaning in and of
-        # themselves (e.g., the "float" in the hint override
-        # "BeartypeConf(hint_overrides={float: float | int})" has semantic
-        # meaning as a builtin type).
-    # If doing so raises a "TypeError", this hint is unhashable and thus
-    # inapplicable for hint overriding. In this case, preserve this hint as is.
-    except TypeError:
-        pass
-
-    # Return this possibly overridden hint.
-    return hint_or_sane
+    pass
 
 # ....................{ PRIVATE ~ globals                  }....................
 _HINT_REDUCERS = (

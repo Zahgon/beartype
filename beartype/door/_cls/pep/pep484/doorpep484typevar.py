@@ -48,7 +48,7 @@ class TypeVarTypeHint(UnionTypeHint):
         #   ignorable constraint suffices to render the entire type variable
         #   ignorable: e.g.,
         #       TypeVar('T', object)
-        return self._is_args_ignorable
+        pass
 
     # ..................{ PRIVATE ~ properties               }..................
     #FIXME: *HMM.* We should arguably just define the _make_args() factory
@@ -92,18 +92,4 @@ class TypeVarTypeHint(UnionTypeHint):
 
         # If this type variable is bounded, return the 1-tuple containing only
         # this wrapped bound.
-        if self._hint.__bound__ is not None:
-            return (TypeHint(self._hint.__bound__),)
-        # Else, this type variable is unbounded.
-        #
-        # If this type variable is constrained, return the n-tuple containing
-        # each of these wrapped constraints.
-        elif self._hint.__constraints__:
-            return tuple(TypeHint(t) for t in self._hint.__constraints__)
-        # Else, this type variable is unconstrained.
-
-        #FIXME: Consider globalizing this as a private constant for efficiency.
-        # Return the 1-tuple containing only the "object" superclass. Why?
-        # Because PEP 484 states that an unconstrained and unbounded type
-        # variable has an implicit upper bound of "object".
-        return (TypeHint(object),)
+        pass

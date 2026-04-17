@@ -825,8 +825,7 @@ def _func_checker_ignorable(obj: object) -> bool:
     passed an ignorable type hint rather than inefficiently regenerating a
     unique ignorable type-checking tester function for that hint.
     '''
-
-    return True
+    pass
 
 # ....................{ PRIVATE ~ getters                  }....................
 #FIXME: Unit test us up, please.

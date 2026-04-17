@@ -114,39 +114,7 @@ def _infer_hint_thirdparty_numpy_ndarray(obj: object, **kwargs) -> object:
       **dimensionality** (i.e., :attr:`numpy.ndarray.ndim` instance variable) to
       be that of the passed NumPy array.
     '''
-
-    # ....................{ IMPORTS                        }....................
-    # Defer package-specific imports.
-    from beartype.vale import (
-        IsAttr,
-        IsEqual,
-    )
-    from numpy import ndarray  # pyright: ignore
-    from numpy.typing import NDArray  # type: ignore[attr-defined]
-
-    # Validate sanity.
-    assert isinstance(obj, ndarray), f'{repr(obj)} not NumPy array.'
-
-    # ....................{ DTYPE                          }....................
-    # Coarse-grained NumPy-agnostic builtin type (e.g., "int") reduced from the
-    # fine-grained NumPy-specific data type of the passed NumPy array (e.g.,
-    # "numpy.int64"). Everybody wants the former. Nobody wants the latter.
-    numpy_dtype = reduce_numpy_dtype(obj.dtype)  # type: ignore[name-defined]
-
-    # Hint to be returned, defaulting to the "NDArray" type hint factory
-    # subscripted by the dtype .
-    hint: object = NDArray[numpy_dtype]  # type: ignore[misc,valid-type]
-
-    # ....................{ SHAPE                          }....................
-    # Generalize this hint to additionally validate the dimensionality
-    # (i.e., number of dimensions equivalent to the length of the
-    # "obj.shape" property) to be that of this array.
-    hint = Annotated[hint, IsAttr['ndim', IsEqual[obj.ndim]]]  # type: ignore[name-defined]
-    # Else, "typing(|_extensions).Annotated" is unimportable. In this case...
-
-    # ....................{ RETURN                         }....................
-    # Return this hint.
-    return hint
+    pass
 
 # ....................{ PRIVATE ~ globals                  }....................
 _PACKAGE_NAME_TO_TYPE_BASENAME_TO_INFERER: Dict[str, Dict[str, Callable]] = {

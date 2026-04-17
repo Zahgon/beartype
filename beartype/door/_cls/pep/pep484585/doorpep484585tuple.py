@@ -33,21 +33,7 @@ class TupleFixedTypeHint(TypeHint):
 
         # Tuple of the zero or more low-level child type hints subscripting
         # (indexing) the low-level parent type hint wrapped by this wrapper.
-        args = super()._make_args()
-
-        # If this is the empty fixed-length tuple type hint (e.g., "tuple[()]"),
-        # reduce this awkward nested-empty-tuple-in-a-1-tuple to an elegant
-        # empty tuple as expected by sane users. Even if users wanted us to
-        # return an awkward nested-empty-tuple-in-a-1-tuple, we couldn't. Why?
-        # Because an empty tuple is *NOT* otherwise a valid type hint and
-        # *CANNOT* thus be wrapped by an instance of the "TypeHint" superclass.
-        if is_hint_pep484585646_tuple_empty(self._hint):
-            args = ()
-        # Else, this is a non-empty fixed-length tuple type hint (e.g.,
-        # "tuple[int, str]"). In this case, preserve these child hints as is.
-
-        # Return these child hints.
-        return args
+        pass
 
     # ..................{ PRIVATE ~ properties               }..................
     @property
@@ -59,7 +45,7 @@ class TupleFixedTypeHint(TypeHint):
         # child type hints as a whole would then prevent the length of this
         # tuple type hint from being type-checked, which would rather defeat the
         # purpose of the whole thing really.
-        return False
+        pass
 
     # ..................{ PRIVATE ~ testers                  }..................
     def _is_subhint_branch(self, branch: TypeHint) -> bool:
@@ -127,21 +113,4 @@ class TupleVariableTypeHint(SubscriptedTypeHint):
 
         # Tuple of the two low-level child type hints subscripting (indexing)
         # the low-level parent type hint wrapped by this wrapper.
-        args = super()._make_args()
-
-        # Validate this parent type hint to be subscripted sanely.
-        #
-        # Note that the previously called get_hint_pep_sign() getter already
-        # validated this to be the case.
-        assert is_hint_pep484585646_tuple_variadic_unpacked_if_needed(self._hint), (
-            f'PEP 585 variable-length tuple type hint {repr(self._hint)} '
-            f'not of the form "tuple[{{child_hint}}, ...]".'
-        )
-
-        # Reduce this tuple to the 1-tuple consisting *ONLY* of the first child
-        # type hint subscripting this parent type hint. Equivalently, ignore the
-        # second child type subscripting this parent type hint; by the above
-        # validation, the latter is guaranteed to be the ellipses singleton,
-        # which is *NOT* otherwise a valid type hint and *CANNOT* thus be
-        # wrapped by an instance of the "TypeHint" superclass.
-        return (args[0],)
+        pass

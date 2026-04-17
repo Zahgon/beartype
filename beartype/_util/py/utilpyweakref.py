@@ -45,59 +45,7 @@ def make_obj_weakref_and_repr(obj: object) -> tuple[Optional[WeakrefCallableType
           truncated to ~10KB to minimize space consumption in the worst case of
           an obscenely large object.
     '''
-
-    # ....................{ IMPORTS                        }....................
-    # Avoid circular import dependencies.
-    from beartype._util.text.utiltextrepr import represent_object
-
-    # ....................{ LOCALS                         }....................
-    # Weak reference to this object if this object supports weak references *OR*
-    # "None" otherwise (e.g., if this object is a variable-sized container).
-    obj_weakref: Optional[WeakrefCallableType] = None
-
-    # Machine-readable representation of this object truncated to minimize space
-    # consumption for the worst case of an obscenely large object.
-    obj_repr = represent_object(
-        obj=obj,
-        # Store at most 1KB of the full representation, which should
-        # certainly suffice for most use cases. Note that the
-        # default of 96B is far too small to be useful here.
-        max_len=1000,
-    )
-
-    # ....................{ MAKE                           }....................
-    # If this object is "None", substitute in this non-"None" placeholder. Since
-    # the "weakref.ref" class ambiguously returns "None" when this object has
-    # already been garbage-collected, this placeholder enables subsequent calls
-    # to the get_obj_weakref_or_repr() getter to disambiguate between these two
-    # common edge cases.
-    if obj is None:
-        obj_weakref = _WEAKREF_NONE  # type: ignore[assignment]
-    # Else, this object is *NOT* "None". In this case...
-    else:
-        # Attempt to classify a weak reference to this object for safety.
-        try:
-            obj_weakref = WeakrefCallableType(obj)
-        # If doing so raises a "TypeError", this object *CANNOT* be weakly
-        # referred to. Sadly, builtin variable-sized C-based types (e.g.,
-        # "dict", "int", "list", "tuple") *CANNOT* be weakly referred to. This
-        # constraint is officially documented by the "weakref" module:
-        #     Several built-in types such as list and dict do not directly
-        #     support weak references but can add support through subclassing.
-        #     CPython implementation detail: Other built-in types such as tuple
-        #     and int do not support weak references even when subclassed.
-        #
-        # Since this edge case is common, permitting this exception to unwind
-        # the call stack is unacceptable; likewise, even coercing this exception
-        # into non-fatal warnings would generic excessive warning spam and is
-        # thus also unacceptable. The only sane solution remaining is to
-        # silently store the machine-readable representation of this object and
-        # return that rather than this object from the "object" property.
-        except TypeError:
-            pass
-
-    # ....................{ RETURN                         }....................
-    return obj_weakref, obj_repr
+    pass
 
 
 
@@ -151,43 +99,7 @@ def get_weakref_obj_or_repr(
         If ``obj_weakref`` is invalid: i.e., neither ``None``,
         :data:`_WEAKREF_NONE`, nor a weak reference.
     '''
-    assert isinstance(obj_repr, str), f'{repr(obj_repr)} not string.'
-
-    # If this weak reference is "None", the prior call to
-    # make_obj_weakref_and_repr() was passed an object that could *NOT* be
-    # weakly referred to (e.g., C-based container). In this case, fallback to
-    # the machine-readable representation of that object.
-    if obj_weakref is None:
-        return obj_repr
-    # Else, this weak reference is *NOT* "None".
-    #
-    # If this weak reference is "_WEAKREF_NONE", the prior call to
-    # make_obj_weakref_and_repr() was passed the "None" singleton. In this case,
-    # substitute this placeholder for "None". See that factory.
-    elif obj_weakref is _WEAKREF_NONE:
-        return None
-    # Else, this weak reference is *NOT* that placeholder.
-    #
-    # If this weak reference is *NOT* a weak reference, raise an exception.
-    elif not isinstance(obj_weakref, WeakrefCallableType):
-        raise _BeartypeUtilPythonWeakrefException(
-            f'Weak reference {repr(obj_weakref)} invalid '
-            f'(i.e., neither weak reference, "None", nor "_WEAKREF_NONE").'
-        )
-    # Else, this weak reference is a weak reference.
-
-    # Object weakly referred to by this weak reference if this object is alive
-    # *OR* "None" otherwise (i.e., if this object was garbage-collected).
-    obj = obj_weakref()
-
-    # Return either...
-    return (
-        # If this object is still alive, this object;
-        obj if obj is not None else
-        # Else, this object is now dead. In this case, the machine-readable
-        # representation of this object instead.
-        obj_repr
-    )
+    pass
 
 # ....................{ PROPERTIES ~ constants             }....................
 _WEAKREF_NONE = object()

@@ -261,37 +261,7 @@ class BeartypeNodeScopeBeforelist(object):
         BeartypeNodeScopeBeforelist
             Shallow copy of this scope beforelist.
         '''
-        # print('Permuting scope beforelist...')
-
-        # Imported attribute name trie unique to this new local scope,
-        # initialized to either...
-        scoped_attr_basename_trie = (
-            # If *NO* transitive parent scope of this scope imported a
-            # decorator-hostile decorator, this scope is the first scope in this
-            # hierarchy of scopes to require an imported attribute name trie. In
-            # this case, instantiate this trie as an empty chain map.
-            ChainMap()
-            if self.scoped_attr_basename_trie is None else
-            # Else, some transitive parent scope of this scope already imported
-            # a decorator-hostile decorator and thus required this trie. In this
-            # case, enable callers to track imports safely across this new scope
-            # by shallowly copying this trie unique to this scope.
-            self.scoped_attr_basename_trie.new_child()
-        )
-
-        # Create and return a shallow copy of this parent beforelist.
-        return BeartypeNodeScopeBeforelist(
-            scoped_attr_basename_trie=scoped_attr_basename_trie,
-
-            # Share all remaining data structures of this parent beforelist
-            # with this child beforelist.
-            schema_attr_basename_trie=self.schema_attr_basename_trie,
-            schema_package_names=self.schema_package_names,
-
-            # Avoid uselessly recursively re-validating the contents of these
-            # data structures for efficiency.
-            is_validate=False,
-        )
+        pass
 
 # ....................{ RAISERS                            }....................
 def die_unless_decor_hostile_func_trie(
@@ -325,29 +295,7 @@ def die_unless_decor_hostile_func_trie(
     exception_cls
         If this data structure is *not* a valid decorator function beforelist.
     '''
-    assert isinstance(exception_cls, type), (
-        f'{repr(exception_cls)} not exception type.')
-    assert isinstance(exception_prefix, str), (
-        f'{repr(exception_prefix)} not string.')
-
-    # If this data structure is *not* a frozen dictionary, raise an exception.
-    if not isinstance(schema_attr_basename_trie, FrozenDict):
-        raise exception_cls(
-            f'{exception_prefix}{repr(schema_attr_basename_trie)} not '
-            f'frozen dictionary.'
-        )
-    # Else, this data structure is a frozen dictionary.
-
-    # If this data structure is *not* a valid decorator function beforelist,
-    # raise an exception.
-    if not is_decor_hostile_func_trie(schema_attr_basename_trie):
-        raise exception_cls(
-            f'{exception_prefix}{repr(schema_attr_basename_trie)} not '
-            f'decorator-hostile decorator name trie (i.e., '
-            f'recursive tree structure satisfying the recursive type hint '
-            f'BeartypeDecorPlaceTrie = FrozenDict[str, FrozenDict[str, '
-            f'"BeartypeDecorPlaceTrie"]]).'
-        )
+    pass
     # Else, this data structure is a valid decorator function beforelist.
 
 # ....................{ TESTERS                            }....................
@@ -370,42 +318,7 @@ def is_decor_hostile_func_trie(
     bool
         :data:`True` only if this is a valid decorator function beforelist.
     '''
-
-    #FIXME: *INSUFFICIENT.* To quote the "BeartypeDecorPlaceTrie" hint:
-    #    "Note that the root trie is guaranteed to map from strings to *only*
-    #    nested frozen dictionaries (rather than to both nested frozen
-    #    dictionaries and :data:`None`). Consequently, this hint intentionally
-    #    differentiates between matching the root and non-root nesting levels of
-    #    this trie."
-    #
-    #Ergo, we need to expand this validation to:
-    #* Non-recursively match the outermost layer to *NOT* map to "None".
-    #* Recursively match all non-inner layers to map to
-    #  "BeartypeDecorPlaceTrieABC" instances.
-    #* Recursively match all inner layers to optionally map to "None".
-
-    # Return true only if...
-    return (
-        # The passed object is a frozen dictionary *AND*...
-        isinstance(schema_attr_basename_trie, FrozenDict) and
-        # For each key-value pair of this frozen dictionary...
-        all(
-            (
-                # This key is a string *AND*...
-                isinstance(module_name, str) and
-                # This value is either...
-                (
-                    # "None", signifying a terminal leaf node.
-                    submodule_or_func_name is None or
-                    # A recursively nested frozen dictionary satisfying the same
-                    # data structure, signifying a non-terminal stem node.
-                    is_decor_hostile_func_trie(submodule_or_func_name)
-                )
-            )
-            for module_name, submodule_or_func_name in (
-                schema_attr_basename_trie.items())
-        )
-    )
+    pass
 
 # ....................{ FACTORIES                          }....................
 #FIXME: Unit test us up, please.

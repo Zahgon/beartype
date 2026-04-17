@@ -149,17 +149,4 @@ class BeartypeNodeScope(object):
         attempting to modify the contents of this beforelist, callers should
         call this method to render this beforelist safe for modification.
         '''
-        # print(f'Permuting scope "{self.name}" if needed...')
-
-        # If this beforelist is *NOT* yet safely modifiable, this beforelist is
-        # still a reference to a parent scope's beforelist and is thus *NOT*
-        # unique to this scope. In this case...
-        if not self._is_beforelist_mutable:
-            # print(f'Permuting scope "{self.name}"...')
-
-            # Replace this shared beforelist with a new beforelist unique to
-            # this scope, which may then be safely modified by callers.
-            self.beforelist = self.beforelist.permute()
-
-            # Record that this beforelist is now safely modifiable.
-            self._is_beforelist_mutable = True
+        pass

@@ -654,22 +654,7 @@ class _LambdaNodeUnparser(NodeVisitor):
         node : LambdaNode
             AST node encapsulating the definition of a lambda function.
         '''
-
-        # If the desired lambda starts on the current line number...
-        if node.lineno == self._lambda_lineno:
-            # Decompile this node into the substring of this line defining this
-            # lambda.
-            self.lambdas_code.append(ast_unparse(node))
-
-            # Recursively visit all child nodes of this lambda node. While doing
-            # so is largely useless, a sufficient number of dragons are skulking
-            # to warrant an abundance of caution and magic.
-            self.generic_visit(node)
-        # Else if the desired lambda starts on a later line number than the
-        # current line number, recursively visit all child nodes of the current
-        # lambda node.
-        elif node.lineno < self._lambda_lineno:
-            self.generic_visit(node)
+        pass
         #FIXME: Consider raising an exception here instead like
         #"StopException" to force a premature halt to this recursion. Of
         #course, handling exceptions also incurs a performance cost, so...

@@ -366,91 +366,7 @@ def _is_obj_structural_subtype(cls, obj: Any) -> bool:
     bool
         :data:`True` only if this object satisfies this protocol.
     '''
-
-    # Avoid circular import dependencies.
-    from beartype._util.hint.pep.proposal.pep749.pep649749annotate import (
-        get_hintable_pep649749_annotations_or_none)
-
-    # Dictionary mapping from the name to value of each attribute directly
-    # declared by this protocol class.
-    cls_attr_name_to_value = cls.__dict__
-
-    # Dictionary mapping from the name to type hint of each possibly undefined
-    # attribute directly declared by this protocol class if this class defines
-    # this dictionary *OR* .
-    #
-    # This minor edge cases handles
-    # attributes annotated by a type hint but lacking a value: e.g.,
-    #     class SomeProtocol(Protocol):
-    #         some_attr: int | str  # <-- note the lack of a value
-    # cls_attr_name_to_hint = get_hintable_pep649749_annotations_or_none(cls)
-
-    #FIXME: Generalize to support Python 3.14. Super-nontrivial. We'll basically
-    #need to define a new get_hintable_pep649749_dict_annotations_or_none() getter
-    #to perform *ONLY* the first half of the annotationslib.get_annotations()
-    #getter. For now, doing nothing is preferable. Doing nothing simply means
-    #that "beartype.typing.Protocol" users will be unable to use unquoted
-    #forward references in protocol type hints under Python >= 3.14. That's
-    #non-ideal, of course, but we can't be bothered to tackle this yet. *sigh*
-    #FIXME: *HMM.* PEP 749 explicitly prohibits this behaviour:
-    #    Users should not access the class dictionary directly for accessing
-    #    annotations or the annotate function; the data stored in the class
-    #    dictionary is an implementation detail and its format may change in the
-    #    future. If only the class namespace dictionary is available (e.g.,
-    #    while the class is being constructed),
-    #    annotationlib.get_annotate_from_class_namespace() may be used to
-    #    retrieve the annotate function from the class dictionary.
-    #
-    #This... is becoming kinda ugly. At this point, perhaps we genuinely *DO*
-    #want to quietly remove this @beartype-specific protocol infrastructure at
-    #some point? I mean, we aren't CPython. We can't fulfill that obligation,
-    #however much we might like to pretend that we can. *sigh*
-    cls_attr_name_to_hint = cls_attr_name_to_value.get(
-        '__annotations__', _EMPTY_DICT)
-
-    # Dictionary mapping from the name to either value of each attribute *OR*
-    # type hint of each possibly undefined attribute directly declared by this
-    # protocol class.
-    cls_attr_names = cls_attr_name_to_value | cls_attr_name_to_hint
-
-    # For the name of each attribute declared by this protocol class...
-    for cls_attr_name in cls_attr_names:
-        # If...
-        if (
-            # This name implies this attribute to be unignorable *AND*...
-            #
-            # Specifically, if this name is neither...
-            not (
-                # A private attribute defined by dark machinery in the
-                # "ABCMeta" metaclass for abstract base classes *OR*...
-                cls_attr_name.startswith('_abc_') or
-                # That of an ignorable non-protocol attribute...
-                cls_attr_name in _PROTOCOL_ATTR_NAMES_IGNORABLE
-            # This attribute is either...
-            ) and (
-                # Undefined by the passed object *OR*...
-                not hasattr(obj, cls_attr_name) or
-                # Defined by the passed object as a "blocked" (i.e., omitted
-                # from being type-checked as part of this protocol) method.
-                # For unknown and indefensible reasons, PEP 544 explicitly
-                # supports this fragile, unreadable, and error-prone idiom
-                # enabling objects to leave methods "undefined." What this!?
-                (
-                    #FIXME: Unit test this up, please.
-                    # A callable *AND*...
-                    callable(getattr(cls, cls_attr_name, None)) and
-                    # The passed object nullified this method. *facepalm*
-                    getattr(obj, cls_attr_name) is None
-                )
-            )
-        ):
-            # Then the passed object violates this protocol. In this case,
-            # return false.
-            return False
-
-    # Else, the passed object satisfies this protocol. In this case, return
-    # true.
-    return True
+    pass
 
 # ....................{ CLASSES                            }....................
 # @runtime_checkable
@@ -676,18 +592,7 @@ if IS_PYTHON_AT_LEAST_3_12:
         :class:`beartype.typing.Protocol` superclass equivalent to the standard
         :class:`typing.Protocol` superclass.
         '''
-
-        # If the passed class is our "beartype.typing.Protocol" superclass,
-        # silently replace that with "typing.Protocol" *BEFORE* calling the
-        # standard typing._generic_class_getitem() utility function -- which
-        # explicitly only supports the latter.
-        if cls is Protocol:
-            cls = _ProtocolSlow
-        # Else, the passed class is *NOT* our "beartype.typing.Protocol"
-        # superclass. In this case, preserve that class as is.
-
-        # Defer to the standard typing._generic_class_getitem() implementation.
-        return _generic_class_getitem_old(cls, params)
+        pass
 
     # Replace the standard typing._generic_class_getitem() implementation with
     # the wrapper defined above. *gulp*

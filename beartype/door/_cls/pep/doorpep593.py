@@ -56,16 +56,12 @@ class AnnotatedTypeHint(TypeHint):
     def _is_args_ignorable(self) -> bool:
         # since Annotated[] must be used with at least two arguments, we are
         # never just the origin of the metahint
-        return False
+        pass
 
     # ..................{ PRIVATE ~ testers                  }..................
     def _is_equal(self, other: TypeHint) -> bool:
 
-        return (
-            isinstance(other, AnnotatedTypeHint)
-            and self._metahint_wrapper == other._metahint_wrapper
-            and self._metadata == other._metadata
-        )
+        pass
 
 
     def _is_subhint_branch(self, branch: TypeHint) -> bool:

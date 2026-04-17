@@ -194,18 +194,7 @@ class BeartypeNodeTransformer(
             List of the one or more unqualified basenames comprising the
             fully-qualified name of the currently visited module.
         '''
-
-        # List of each unqualified basename comprising the name of the currently
-        # visited module, split from the fully-qualified name of that module on
-        # "." delimiters.
-        #
-        # Note that the "str.split('.')" and "str.rsplit('.')" calls produce the
-        # same lists under all edge cases. We arbitrarily call the former rather
-        # than the latter for simplicity.
-        module_basenames = self._module_name.split('.')
-
-        # Return this list.
-        return module_basenames
+        pass
 
 
     #FIXME: Unit test us up, please. *sigh*
@@ -230,21 +219,7 @@ class BeartypeNodeTransformer(
         _BeartypeClawAstNodeScopesException
             If this property is unsafely accessed at an early time.
         '''
-
-        # If the lexical scope stack is empty, this AST transformer has yet to
-        # visit the root "Module" node of the currently visited module. In this
-        # case, raise an exception.
-        if not self._scopes:
-            raise _BeartypeClawAstNodeScopesException(
-                f'Module "{self._module_name}" '
-                f'global lexical scope has yet to be visited '
-                f'(i.e., visitModule() method not previously called).'
-            )
-        # Else, the lexical scope stack is non-empty.
-
-        # Return the last lexical scope on this stack -- the top-most item
-        # signifying the currently visited lexical scope.
-        return self._scopes[-1]
+        pass
 
     # ..................{ SUPERCLASS                         }..................
     # Overridden methods first defined by the "NodeTransformer" superclass.
@@ -263,44 +238,7 @@ class BeartypeNodeTransformer(
         NodeT
             Parent node returned and thus preserved as is.
         '''
-
-        # Type of this parent node.
-        node_type = type(node)
-
-        # If this parent node declares a new lexical scope (i.e., by defining a
-        # new class or callable)...
-        if node_type in TYPES_NODE_LEXICAL_SCOPE:
-            # Add the type of this parent node to the top of the stack of all
-            # current lexical scopes *BEFORE* visiting any child nodes of this
-            # parent node.
-            self._scopes.append_scope_nested(
-                # Fully-qualified name of the parent scope (i.e.,
-                # "{self._scopes[-1].name}") followed by the unqualified
-                # basename of this new class or callable declaring this new
-                # lexical scope (i.e., "{node.name}").
-                #
-                # Note that both the "ast.ClassDef" *AND* "ast.FunctionDef" node
-                # types define the "name" instance variable accessed here.
-                name=f'{self._scopes[-1].name}.{node.name}',  # type: ignore[attr-defined]
-                node_type=node_type,
-            )
-
-            # Recursively visit *ALL* child nodes of this parent node.
-            super().generic_visit(node)
-
-            # Remove the type of this parent node from the top of the stack of
-            # all current lexical scopes *AFTER* visiting all child nodes of
-            # this parent node.
-            self._scopes.pop()
-        # Else, this parent node does *NOT* declare a new lexical scope. In this
-        # case...
-        else:
-            # Recursively visit all child nodes of this parent node *WITHOUT*.
-            # modifying the stack of all current lexical scopes.
-            super().generic_visit(node)
-
-        # Return this parent node as is.
-        return node
+        pass
 
     # ..................{ VISITORS ~ class                   }..................
     #FIXME: Implement us up, please.
@@ -321,15 +259,7 @@ class BeartypeNodeTransformer(
         Optional[ClassDef]
             This same class node.
         '''
-
-        # Add a new child decoration node to this parent class node decorating
-        # this class by @beartype under this configuration.
-        self._decorate_node_beartype(node=node, conf=self._conf)
-
-        # Recursively transform *ALL* child nodes of this parent class node.
-        # Note that doing so implicitly calls the visit_FunctionDef() method
-        # (defined below), each of which then effectively reduces to a noop.
-        return self.generic_visit(node)
+        pass
 
     # ..................{ VISITORS ~ callable                }..................
     def visit_FunctionDef(self, node: NodeCallable) -> Optional[NodeCallable]:
@@ -351,44 +281,7 @@ class BeartypeNodeTransformer(
         Optional[NodeCallable]
             This same callable node.
         '''
-
-        # If...
-        if (
-            # * This callable node has one or more parent nodes previously
-            #   visited by this node transformer *AND* the immediate parent node
-            #   of this callable node is a class node, then this callable node
-            #   encapsulates a method rather than a function. In this case, the
-            #   visit_ClassDef() method defined above has already explicitly
-            #   decorated the class defining this method by the @beartype
-            #   decorator, which then implicitly decorates both this and all
-            #   other methods of that class by that decorator. For safety and
-            #   efficiency, avoid needlessly re-decorating this method by the
-            #   same decorator by preserving and returning this node as is.
-            # * That is *NOT* the case, then this callable node is either the
-            #   root node of the current AST *OR* has a parent node that is not
-            #   a class node. In either case, this callable node necessarily
-            #   encapsulates a function (rather than a method), which yet to be
-            #   decorated. Do so now! So say we all.
-            #
-            # This logic corresponds to the above "That is *NOT* the case" case
-            # (i.e., this callable node necessarily encapsulates a function).
-            # Look. Just accept that we have a tenuous grasp on reality at best.
-            not self._scopes.is_scope_class and
-            # ...and the currently visited callable is annotated by one or more
-            # type hints and thus *NOT* ignorable with respect to beartype
-            # decoration...
-            is_node_callable_typed(node)
-        ):
-            # print(f'Decorating function {node.name}()...')
-
-            # Add a new child decoration node to this parent callable node
-            # decorating this callable by @beartype under this configuration.
-            self._decorate_node_beartype(node=node, conf=self._conf)
-        # Else, that callable is ignorable. In this case, avoid needlessly
-        # decorating that callable by @beartype for efficiency.
-
-        # Recursively transform *ALL* child nodes of this parent callable node.
-        return self.generic_visit(node)
+        pass
 
 
     # Efficiently decorate coroutines (i.e., asynchronous callables declared via

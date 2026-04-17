@@ -420,30 +420,7 @@ def get_hint_object_violation_message(
     :func:`.get_hint_object_violation`
         Further details.
     '''
-
-    # Type-checking violation cause (i.e., object providing various metadata
-    # describing the failure of the passed object to satisfy the passed type
-    # hint under the passed beartype configuration).
-    violation_cause = _find_hint_object_violation_cause(
-        call_meta=call_meta,
-        conf=conf,
-        hint=hint,
-        obj=obj,
-        # Nonsense required by the _find_hint_object_violation_cause() API. Our
-        # younger self thought he was doing a good thing. YOUNGER SELF!!!!!!
-        exception_prefix='',
-    )
-
-    # Human-readable string describing the failure of this object to satisfy
-    # this hint under this configuration.
-    #
-    # Note that the lower-level _find_hint_object_violation_cause() finder
-    # called above has already internally validated this instance variable to be
-    # a non-empty string.
-    violation_message: str = violation_cause.cause_str_or_none  # type: ignore[assignment]
-
-    # Return this string.
-    return violation_message
+    pass
 
 # ....................{ PRIVATE ~ constants                }....................
 # Assuming a line length of 80 characters, this magic number truncates

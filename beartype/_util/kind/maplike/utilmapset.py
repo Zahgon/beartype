@@ -68,17 +68,7 @@ def merge_mappings(*mappings: Mapping) -> Mapping:
     :func:`.die_if_mappings_two_items_collide`
         Further details.
     '''
-
-    # Return either...
-    return (
-        # If only two mappings are passed, defer to a function optimized for
-        # merging two mappings.
-        merge_mappings_two(mappings[0], mappings[1])
-        if len(mappings) == 2 else
-        # Else, three or more mappings are passed. In this case, defer to a
-        # function optimized for merging three or more mappings.
-        merge_mappings_two_or_more(mappings)
-    )
+    pass
 
 
 def merge_mappings_two(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
@@ -163,41 +153,7 @@ def merge_mappings_two_or_more(mappings: Sequence[Mapping]) -> Mapping:
     :func:`beartype._util.kind.maplike.utilmaptest.die_if_mappings_two_items_collide`
         Further details.
     '''
-    assert isinstance(mappings, Sequence), f'{repr(mappings)} not sequence.'
-
-    # Number of passed mappings.
-    MAPPINGS_LEN = len(mappings)
-
-    # If less than two mappings are passed, raise an exception.
-    if MAPPINGS_LEN < 2:
-        # If only one mapping is passed, raise an appropriate exception.
-        if MAPPINGS_LEN == 1:
-            raise _BeartypeUtilMappingException(
-                f'Two or more mappings expected, but only one mapping '
-                f'{represent_object(mappings[0])} passed.')
-        # Else, no mappings are passed. Raise an appropriate exception.
-        else:
-            raise _BeartypeUtilMappingException(
-                'Two or more mappings expected, but no mappings passed.')
-    # Else, two or more mappings are passed.
-    assert isinstance(mappings[0], Mapping), (
-        f'First mapping {repr(mappings[0])} not mapping.')
-
-    # Merged mapping to be returned, initialized to the merger of the first two
-    # passed mappings.
-    mapping_merged = merge_mappings_two(mappings[0], mappings[1])
-
-    # If three or more mappings are passed...
-    if MAPPINGS_LEN > 2:
-        # For each of the remaining mappings...
-        for mapping in mappings[2:]:
-            # Merge this mapping into the merged mapping to be returned.
-            mapping_merged = merge_mappings_two(mapping_merged, mapping)
-    # Else, only two mappings are passed. In these case, these mappings have
-    # already been merged above.
-
-    # Return this merged mapping.
-    return mapping_merged
+    pass
 
 # ....................{ REMOVERS                           }....................
 def remove_mapping_keys(mapping: MutableMapping, keys: Set) -> None:

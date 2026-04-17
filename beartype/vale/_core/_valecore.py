@@ -425,39 +425,7 @@ class BeartypeValidator(object):
         str
             Substring diagnosing this object against this validator.
         '''
-        assert isinstance(is_shortcircuited, bool), (
-            f'{repr(is_shortcircuited)} not boolean.')
-
-        # True only if the passed object satisfies this validator.
-        is_obj_valid = None
-
-        # If this validator has been short-circuited by a prior sibling...
-        if is_shortcircuited:
-            # Attempt to decide whether that object satisfies this validator.
-            try:
-                is_obj_valid = self.is_valid(obj)
-            # If doing so raises an exception, this short-circuited validator
-            # was *NOT* intended to be called under short-circuiting. In this
-            # case, silently ignore this exception. See the above discussion.
-            except Exception:
-                pass
-        # Else, this validator is *NOT* short-circuited. In this case, this
-        # validator is *NOT* expected to raise exceptions. Nonetheless, if this
-        # validator does so, ensure that exception is propagated up the call
-        # stack by *NOT* silently ignoring that exception (as above).
-        else:
-            is_obj_valid = self.is_valid(obj)
-
-        # Format the validity of this object against this validator for the
-        # typical case of a lowest-level beartype validator *NOT* wrapping one
-        # or more other even lower-level beartype validators (e.g., via a set
-        # theoretic operator).
-        return format_diagnosis_line(
-            validator_repr=repr(self),
-            indent_level_outer=indent_level_outer,
-            indent_level_inner=indent_level_inner,
-            is_obj_valid=is_obj_valid,
-        )
+        pass
 
     # ..................{ DUNDERS ~ operator                 }..................
     # Define a domain-specific language (DSL) enabling callers to dynamically

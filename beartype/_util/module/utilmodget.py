@@ -67,14 +67,7 @@ def get_object_module_or_none(obj: object) -> Optional[ModuleType]:
           dunder attribute.
         * :data:`None` otherwise.
     '''
-
-    # Fully-qualified name of the module defining this object if any or "None".
-    module_name = get_object_module_name_or_none(obj)
-
-    # Return either:
-    # * If a module defines this object, that module.
-    # * Else, "None".
-    return get_module_imported_or_none(module_name) if module_name else None
+    pass
 
 
 def get_object_module(obj: object) -> ModuleType:
@@ -98,24 +91,7 @@ def get_object_module(obj: object) -> ModuleType:
     _BeartypeUtilModuleException
         If this object does *not* define the ``__module__`` dunder attribute.
     '''
-
-    # Fully-qualified name of the module defining this object if any *OR* raise
-    # an exception otherwise.
-    module_name = get_object_module_name(obj)
-
-    # Module defining this object if any *OR* "None" otherwise.
-    module = get_module_imported_or_none(module_name)
-
-    # If this module was *NOT* previously imported despite this object existing
-    # and thus having been imported from something, this object deceptively lies
-    # about its module. In this case, raise an exception.
-    if module is None:
-        raise _BeartypeUtilModuleException(
-            f'{repr(obj)} module "{module_name}" not found.')
-    # If this module was previously imported.
-
-    # Return this module.
-    return module
+    pass
 
 # ....................{ GETTERS ~ object : line            }....................
 def get_object_module_line_number_begin(obj: object) -> int:

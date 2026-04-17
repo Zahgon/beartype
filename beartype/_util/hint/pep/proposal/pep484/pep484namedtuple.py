@@ -90,38 +90,4 @@ def is_hint_pep484_namedtuple_subclass(hint: Hint) -> bool:
         :data:`True` only if this object is a :pep:`484`-compliant named tuple
         subclass.
     '''
-
-    # Return true only if...
-    return (
-        # This hint is a proper tuple subclass (i.e., subclass of the builtin
-        # "tuple" type but *NOT* that type itself) *AND*...
-        is_type_subclass_proper(hint, tuple) and
-        #FIXME: Implement us up, please. To do so efficiently, we'll probably
-        #want to:
-        #* Declare a private global frozenset of the names of all uniquely
-        #  identifying "typing.NamedTuple" attributes: e.g.,
-        #  _NAMEDTUPLE_UNIQUE_ATTR_NAMES = frozenset((
-        #      # "typing.NamedTuple"-specific quasi-public attributes.
-        #      '__annotations__',
-        #
-        #      # "collections.namedtuple"-specific quasi-public attributes.
-        #      '_asdict',
-        #      '_field_defaults',
-        #      '_fields',
-        #      '_make',
-        #      '_replace',
-        #  ))
-        #* Efficiently take the set intersection of that frozenset and
-        #  "dir(tuple)". If that intersection is non-empty, then this type is
-        #  *PROBABLY* a "typing.NamedTuple" subclass.
-        #
-        #Note that there does exist an alternative. Sadly, that alternative
-        #requires an O(n) test and is thus non-ideal. Nonetheless:
-        #    typing.NamedTuple in getattr(hint, '__orig_bases__', ())
-        #
-        #That *DOES* have the advantage of being deterministic. But the above
-        #set intersection test is mostly deterministic and considerably
-        #faster... we think. Actually, is it? We have *NO* idea. Perhaps we
-        #should simply opt for the simplistic and deterministic O(n) approach.
-        True
-    )
+    pass

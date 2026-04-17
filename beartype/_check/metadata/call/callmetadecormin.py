@@ -189,14 +189,4 @@ def minify_decor_meta_kwargs(**kwargs) -> BeartypeCallDecorMinimalMeta:
     BeartypeCallDecorMinimalMeta
         Minimal metadata minified from this maximal metadata.
     '''
-
-    # Avoid circular import dependencies.
-    from beartype._check.metadata.call.callmetadecor import new_decor_meta
-
-    # With maximal metadata initialized by these parameters...
-    with new_decor_meta(**kwargs) as decor_meta:  # type: ignore[var-annotated]
-        # Minimal metadata reduced from this maximal metadata.
-        decor_meta_min = decor_meta.minify()
-
-    # Return this metadata.
-    return decor_meta_min
+    pass

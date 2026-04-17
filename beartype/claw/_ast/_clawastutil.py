@@ -65,46 +65,4 @@ class BeartypeNodeTransformerUtilityMixin(object):
         keyword
             Keyword node passing this configuration to an arbitrary function.
         '''
-
-        # Node encapsulating the fully-qualified name of the current module.
-        node_module_name = make_node_str(
-            text=self._module_name, node_sibling=node_sibling)  # type: ignore[attr-defined]
-
-        # Node encapsulating a reference to the beartype configuration object
-        # cache (i.e., dictionary mapping from fully-qualified module names to
-        # the beartype configurations associated with those modules).
-        node_module_name_to_conf = make_node_object_attr_load(
-            obj_name=BEARTYPE_CLAW_STATE_OBJ_NAME,
-            attr_name='module_name_to_beartype_conf',
-            node_sibling=node_sibling,
-        )
-
-        # Expression node encapsulating the indexation of a dictionary by the
-        # fully-qualified name of the current module. For simplicity, simply
-        # reuse this node.
-        node_module_name_index = node_module_name
-
-        # Node encapsulating a reference to this beartype configuration,
-        # indirectly (and efficiently) accessed via a dictionary lookup into
-        # this object cache. While cumbersome, this indirection is effectively
-        # "glue" integrating this AST node generation algorithm with the
-        # corresponding Python code subsequently interpreted by Python at
-        # runtime during module importation.
-        node_conf = Subscript(
-            value=node_module_name_to_conf,
-            slice=node_module_name_index,  # type: ignore[arg-type]
-            ctx=NODE_CONTEXT_LOAD,
-        )
-
-        # Node encapsulating the passing of this beartype configuration as the
-        # "conf" keyword argument to an arbitrary function call of some suitable
-        # "beartype" function orchestrated by the caller.
-        node_keyword_conf = make_node_kwarg(
-            kwarg_name='conf', kwarg_value=node_conf, node_sibling=node_sibling)
-
-        # Copy all source code metadata (e.g., line numbers) from this sibling
-        # node onto these new nodes.
-        copy_node_metadata(node_src=node_sibling, node_trg=node_conf)
-
-        # Return this "conf" keyword node.
-        return node_keyword_conf
+        pass

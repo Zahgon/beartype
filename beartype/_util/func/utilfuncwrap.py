@@ -233,20 +233,7 @@ def unwrap_func_classmethod_once(
     :func:`beartype._util.func.utilfunctest.is_func_classmethod`
         Further details.
     '''
-
-    # Avoid circular import dependencies.
-    from beartype._util.func.utilfunctest import die_unless_func_classmethod
-
-    # If this object is *NOT* a class method descriptor, raise an exception.
-    die_unless_func_classmethod(
-        func=func,
-        exception_cls=exception_cls,
-        exception_prefix=exception_prefix,
-    )
-    # Else, this object is a class method descriptor.
-
-    # Return the pure-Python function wrapped by this descriptor. Just do it!
-    return func.__func__
+    pass
 
 
 #FIXME: Currently unused, but extensively tested. *shrug*
@@ -292,20 +279,7 @@ def unwrap_func_staticmethod_once(
     :func:`beartype._util.func.utilfunctest.is_func_staticmethod`
         Further details.
     '''
-
-    # Avoid circular import dependencies.
-    from beartype._util.func.utilfunctest import die_unless_func_staticmethod
-
-    # If this object is *NOT* a static method descriptor, raise an exception.
-    die_unless_func_staticmethod(
-        func=func,
-        exception_cls=exception_cls,
-        exception_prefix=exception_prefix,
-    )
-    # Else, this object is a static method descriptor.
-
-    # Return the pure-Python function wrapped by this descriptor. Just do it!
-    return func.__func__
+    pass
 
 # ....................{ UNWRAPPERS ~ all                   }....................
 def unwrap_func_all(func: Callable) -> Callable:

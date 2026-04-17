@@ -147,10 +147,7 @@ def beartype(
         :func:`beartype.beartype`
             Further details.
         '''
-
-        # Decorate this object with type-checking configured by this
-        # configuration.
-        return beartype_object(obj, conf)
+        pass
 
     # Cache this private decorator against this configuration.
     _bear_conf_to_decor[conf] = _beartype_confed

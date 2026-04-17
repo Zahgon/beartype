@@ -89,7 +89,7 @@ class BeartypeHintable(object):
 def is_hint_beartypehintable(hint: object) -> bool:
 
     # Return true only if this hint defines the "__beartype_hint__" attribute.
-    return hasattr(hint, '__beartype_hint__')
+    pass
 
 # ....................{ TRANSFORMERS ~ more than meets the }....................
 # ....................{                                eye }....................
@@ -214,65 +214,4 @@ def transform_hint_beartypehintable(
     # If this hint has already been transformed by a prior call to this
     # function, preserve this hint as is. Doing so avoids infinite recursion and
     # is, indeed, the entire point of the "hints_parent_beartypehintable" set.
-    if (
-        hints_parent_beartypehintable and
-        hint in hints_parent_beartypehintable
-    ):
-        return (hint, hints_parent_beartypehintable)
-    # Else, this hint has *NOT* yet been transformed by such a call.
-
-    # Beartype-specific "__beartype_hint__" attribute defined by this hint if
-    # any *OR* "None" otherwise.
-    #
-    # Note that usage of the low-level getattr() builtin is intentional. *ALL*
-    # alternative higher-level approaches suffer various deficits, including:
-    # * Obstructing monkey-patching. The current approach trivializes
-    #   monkey-patching by third parties, enabling users to readily add
-    #   __beartype_hint__() support to third-party packages *NOT* under their
-    #   direct control. Alternative higher-level approaches obstruct that by
-    #   complicating (or just outright prohibiting) monkey-patching.
-    # * Abstract base classes (ABCs) assume that hints that are classes are
-    #   issubclassable (i.e., safely passable as the first arguments of the
-    #   issubclass() builtin). Sadly, various real-world hints that are classes
-    #   are *NOT* issubclassable. This includes the core
-    #   "typing.NDArray[{dtype}]" type hints, astonishingly. Of course, even
-    #   this edge case could be surmounted by explicitly testing for
-    #   issubclassability (e.g., by calling our existing
-    #   is_type_issubclassable() tester); since that tester internally leverages
-    #   the inefficient Easier to Ask for Forgiveness than Permission (EAFP)
-    #   paradigm, doing so would impose a measurable performance penalty. This
-    #   only compounds the monkey-patching complications that an ABC imposes.
-    # * PEP 544-compliant protocols assume that the active Python interpreter
-    #   supports PEP 544, which Python 3.7 does not. While Python 3.7 has
-    #   probably hit its End of Life (EOL) by the time you are reading this,
-    #   additional issue exist. On the one hand, protocols impose even *MORE* of
-    #   a performance burden than ABCs. On the other hand, protocols ease the
-    #   user-oriented burden of monkey-patching.
-    #
-    # In short, this low-level approach effectively imposes *NO* burdens at all.
-    # There exists *NO* reason to prefer higher-level alternatives.
-    __beartype_hint__ = getattr(hint, '__beartype_hint__', None)
-
-    # If this hint does *NOT* define the "__beartype_hint__" attribute, preserve
-    # this hint as is.
-    if __beartype_hint__ is None:
-        return (hint, hints_parent_beartypehintable)
-    # Else, this hint defines the "__beartype_hint__" attribute.
-
-    #FIXME: Define a new private exception type, please.
-    # # If this attribute is *NOT* callable, raise an exception.
-    # if not callable(beartypehintable_reducer):
-    #     raise SomeExceptiot(...)
-    # # Else, this attribute is callable.
-
-    # Replace this hint with the new type hint returned by this callable.
-    hint = __beartype_hint__()
-
-    if hints_parent_beartypehintable is None:
-        hints_parent_beartypehintable = frozenset((hint,))
-    else:
-        #FIXME: Unsure if this works for frozensets. Probably not. *sigh*
-        hints_parent_beartypehintable |= {hint,}
-
-    # Return this transformed hint.
-    return (hint, hints_parent_beartypehintable)
+    pass

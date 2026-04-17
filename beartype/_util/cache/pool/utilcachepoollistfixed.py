@@ -285,9 +285,7 @@ class FixedList(list):
         messages and should probably *not* be called in contexts where
         efficiency is a valid concern.
         '''
-
-        # One-liners for magnanimous pusillanimousness.
-        return f'Fixed list {represent_object(self)}'
+        pass
 
 # ....................{ PRIVATE ~ factories                }....................
 _fixed_list_pool = KeyPool(item_maker=FixedList)

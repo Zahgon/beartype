@@ -146,41 +146,7 @@ def get_interpreter_command_words() -> CommandWords:
     CommandWords
         Iterable of one or more shell words unambiguously running this binary.
     '''
-
-    #FIXME: Uncomment if required. Although this was certainly required a decade
-    #ago, it's unclear whether this is still required; indeed, given the
-    #increased prevalence of Apple Silicon, it seems likely that an entirely
-    #different macOS-specific prefix might be required now. Thus, I sigh. *sigh*
-    # # Avoid circular import dependencies.
-    # from beartype._util.os.utilostest import is_os_macos
-    #
-    # # List of such shell words.
-    # command_words = None  # type: ignore[assignment]
-    #
-    # # If the current platform is macOS, this interpreter is only unambiguously runnable via the
-    # # macOS-specific "arch" command. In this case...
-    # if is_os_macos():
-    #     # Run the "arch" command.
-    #     command_words = ['arch']
-    #
-    #     # Instruct this command to run the architecture-specific binary in
-    #     # Python's universal binary corresponding to the current architecture.
-    #     if is_wordsize_64():
-    #         command_words.append('-i386')
-    #     else:
-    #         command_words.append('-x86_64')
-    #
-    #     # Instruct this command, lastly, to run this interpreter.
-    #     command_words.append(get_interpreter_filename())
-    # # Else, this interpreter is unambiguously runnable as is.
-    # else:
-    #     command_words = [get_interpreter_filename()]
-
-    # Iterable of all interpreter shell words to be returned.
-    command_words = (get_interpreter_filename(),)
-
-    # Return this iterable.
-    return command_words
+    pass
 
 
 @callable_cached
@@ -205,24 +171,4 @@ def get_interpreter_filename() -> str:
     str
         Absolute filename of this binary.
     '''
-
-    # Avoid circular import dependencies.
-    from beartype._util.path.utilpathtest import die_unless_file_executable
-
-    # If Python refuses to provide this filename, raise an exception.
-    #
-    # Note that this test intentionally matches both the empty string and
-    # "None", as the official documentation for "sys.executable" states:
-    #     If Python is unable to retrieve the real path to its executable,
-    #     sys.executable will be an empty string or None.
-    if not sys_executable:
-        raise _BeartypeUtilPythonInterpreterException(
-            'Absolute filename of active Python interpreter not found.')
-    # Else, Python provides this filename.
-
-    # If this file is *NOT* executable, raise an exception.
-    die_unless_file_executable(sys_executable)
-    # Else, this file is executable.
-
-    # Return this filename.
-    return sys_executable
+    pass

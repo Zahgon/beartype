@@ -35,12 +35,12 @@ class LiteralTypeHint(TypeHint):
         # Note that this property getter is intentionally *NOT* memoized with
         # @property_cached, as Python already efficiently guarantees the empty
         # tuple to be a singleton.
-        return ()
+        pass
 
 
     @property
     def _is_args_ignorable(self) -> bool:
-        return False
+        pass
 
     # ..................{ PRIVATE ~ testers                  }..................
     def _is_subhint(self, other: TypeHint) -> bool:
